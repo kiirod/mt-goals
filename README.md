@@ -14,6 +14,11 @@ We collect 0 data. We don't know your IP, Country, house location, etc...
 We don't even know what you do on the website.
 Because we honestly couldn't care less.
 
+# Suggestions, Bug fixes, etc...
+We have a Discord server just for all of that, if you want to join
+just click [here!](https://discord.gg/77axZh2nER)
+
 # License
 You can view our license by clicking [here!](https://github.com/pypppe/mt-goals/blob/main/LICENSE)
 Thanks!
+
