@@ -1,4 +1,3 @@
-
 // Credentials stored in localStorage only
 
 (function () {
@@ -256,6 +255,80 @@
     #mt-modal-save:hover:not(:disabled) { background: #f0c620; }
     #mt-modal-save:disabled { opacity: 0.45; cursor: default; }
 
+    #mt-disc-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: mtFadeIn 0.18s ease;
+      padding: 20px;
+    }
+    #mt-disc-modal {
+      background: #2b2d31;
+      border-radius: 12px;
+      padding: 28px 26px 24px;
+      width: 100%;
+      max-width: 320px;
+      font-family: 'Roboto Mono', monospace;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+      animation: mtSlideUp 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    #mt-disc-icon {
+      opacity: 0.5;
+      width: 40px;
+      height: 40px;
+      margin-top: 2px;
+    }
+    #mt-disc-icon svg {
+      width: 40px;
+      height: 40px;
+    }
+    #mt-disc-text {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.82rem;
+      text-align: center;
+      line-height: 1.55;
+    }
+    #mt-disc-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      width: 100%;
+    }
+    #mt-disc-yes {
+      background: #e2b714;
+      border: none;
+      border-radius: 6px;
+      color: #1a1b1e;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 8px 16px;
+      transition: background 0.15s;
+    }
+    #mt-disc-yes:hover { background: #f0c620; }
+    #mt-disc-no {
+      background: #c0392b;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 8px 16px;
+      transition: background 0.15s;
+    }
+    #mt-disc-no:hover { background: #d44233; }
+
     @keyframes mtFadeIn {
       from { opacity: 0; }
       to   { opacity: 1; }
@@ -368,6 +441,46 @@
     widget.appendChild(card);
   }
 
+  function openDisconnectConfirm() {
+    const overlay = document.createElement('div');
+    overlay.id = 'mt-disc-overlay';
+    overlay.innerHTML = `
+      <div id="mt-disc-modal">
+        <div id="mt-disc-icon">
+          <svg fill="#ffffff" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+            <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z" style="fill-rule:nonzero;"></path>
+            <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z" style="fill-rule:nonzero;"></path>
+          </svg>
+        </div>
+        <div id="mt-disc-text">Are you sure you want to disconnect?</div>
+        <div id="mt-disc-actions">
+          <button id="mt-disc-yes">Yes I'm sure!</button>
+          <button id="mt-disc-no">No Don't!</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const yesBtn = document.getElementById('mt-disc-yes');
+    const noBtn  = document.getElementById('mt-disc-no');
+
+    const close = () => overlay.remove();
+
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+    const escHandler = e => { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); } };
+    document.addEventListener('keydown', escHandler);
+
+    noBtn.addEventListener('click', close);
+
+    yesBtn.addEventListener('click', () => {
+      localStorage.removeItem(LS_USER);
+      localStorage.removeItem(LS_KEY);
+      close();
+      renderConnectBtn();
+    });
+  }
+
   function renderCard(username, pb15, pb60, discordId, discordAvatar) {
     widget.innerHTML = '';
 
@@ -427,9 +540,7 @@
     disc.addEventListener('click', e => {
       e.preventDefault();
       e.stopPropagation();
-      localStorage.removeItem(LS_USER);
-      localStorage.removeItem(LS_KEY);
-      renderConnectBtn();
+      openDisconnectConfirm();
     });
 
     widget.appendChild(card);
