@@ -1,3 +1,4 @@
+
 (function () {
   const LS_USER = 'mt_username';
   const LS_KEY  = 'mt_ape_key';
@@ -145,7 +146,6 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
       animation: mtFadeIn 0.25s ease;
     }
     #mt-connect-btn:hover {
@@ -502,8 +502,8 @@
           <div id="mt-modal-desc">
             Your username and Ape Key are stored only in your browser — never sent to our servers.<br><br>
             Get your Ape Key from
-            <a href="https://monkeytype.com/settings#apeKeys" target="_blank" rel="noopener">
-              monkeytype.com/settings → Ape Keys
+            <a href="https://monkeytype.com/account-settings?tab=apeKeys" target="_blank" rel="noopener">
+              monkeytype.com → account settings → Ape Keys
             </a>.
           </div>
         </div>
@@ -513,7 +513,7 @@
         </div>
         <div class="mt-field">
           <label>Ape Key</label>
-          <input id="mt-input-key" type="password" placeholder="MT_APE_KEY_..." autocomplete="off" spellcheck="false"/>
+          <input id="mt-input-key" type="password" placeholder="NjlhZGNiOTJi..." autocomplete="off" spellcheck="false"/>
         </div>
         <div id="mt-modal-error"></div>
         <div id="mt-modal-actions">
