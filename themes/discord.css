@@ -246,6 +246,15 @@
       gap: 4px;
     }
 
+    .footer-right {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
     .footer-link {
       display: inline-flex;
       align-items: center;
