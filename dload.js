@@ -1,3 +1,4 @@
+// v2
 const link = document.createElement('link');
 link.rel = 'stylesheet';
 link.href = 'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap';
@@ -31,5 +32,6 @@ Object.assign(text.style, {
 overlay.appendChild(text);
 
 setTimeout(() => {
-  text.style.opacity = '0';
+  overlay.style.opacity = '0';
+  overlay.addEventListener('transitionend', () => overlay.remove());
 }, 1000);
