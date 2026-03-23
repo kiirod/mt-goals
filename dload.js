@@ -1,6 +1,6 @@
 const _orig = localStorage.getItem.bind(localStorage);
 
-if (_orig('monkeytype_goals') !== null) {
+if (_orig('monkeytype_goals_theme') !== null) {
   const link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = 'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap';
@@ -39,7 +39,7 @@ if (_orig('monkeytype_goals') !== null) {
 
   localStorage.getItem = function(key) {
     const result = _orig(key);
-    if (key === 'monkeytype_goals') {
+    if (key === 'monkeytype_goals_theme') {
       localStorage.getItem = _orig;
       const elapsed = Date.now() - showedAt;
       const remaining = Math.max(0, MIN_DISPLAY - elapsed);
