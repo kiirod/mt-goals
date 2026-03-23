@@ -373,6 +373,7 @@
 
 <script src="/dload.js"></script>
 <script src="/mt-stats-widget.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
 <script>
 const STORAGE_KEY = 'monkeytype_goals';
@@ -594,8 +595,9 @@ function renderGoal(text, id) {
       fill="#ffffff"/>
   </svg>`;
 
-  delBtn.addEventListener('click', () => {
-    card.classList.add('fading');
+delBtn.addEventListener('click', () => {
+  launchConfetti();
+  card.classList.add('fading');
     card.addEventListener('animationend', () => {
       card.remove();
       const goals = loadGoals().filter(g => g.id !== id);
@@ -691,6 +693,15 @@ function showInputRow() {
 
 addBtn.addEventListener('click', showInputRow);
 loadGoals().forEach(g => renderGoal(g.text, g.id));
+
+function launchConfetti() {
+  confetti({
+    particleCount: 120,
+    spread: 80,
+    origin: { y: 0.6 },
+    colors: ['#e2b714', '#ffffff', '#FF69B4']
+  });
+}
 </script>
 </body>
 </html>
