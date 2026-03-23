@@ -1,4 +1,5 @@
-// v3
+// v4 - fix?
+
 const hasSavedData = localStorage.getItem('monkeytype_goals') !== null;
 
 let overlay = null;
@@ -35,19 +36,20 @@ if (hasSavedData) {
     color: '#e2b714',
   });
   overlay.appendChild(text);
-}
 
-const _originalGetItem = localStorage.getItem.bind(localStorage);
-const WATCHED_KEYS = new Set(['monkeytype_goals', 'monkeytype_goals_theme']);
-const seenKeys = new Set();
+  const _get = localStorage.getItem.bind(localStorage);
+  const WATCHED = new Set(['monkeytype_goals', 'monkeytype_goals_theme']);
+  const seen = new Set();
 
-localStorage.getItem = function(key) {
-  if (WATCHED_KEYS.has(key)) {
-    seenKeys.add(key);
-    if (seenKeys.size === WATCHED_KEYS.size && overlay) {
-      overlay.style.opacity = '0';
-      overlay.addEventListener('transitionend', () => overlay.remove());
+  localStorage.getItem = function(key) {
+    if (WATCHED.has(key)) {
+      seen.add(key);
+      if (seen.size === WATCHED.size) {
+        overlay.style.opacity = '0';
+        overlay.addEventListener('transitionend', () => overlay.remove());
+        localStorage.getItem = _get;
+      }
     }
-  }
-  return _originalGetItem(key);
-};
+    return _get(key);
+  };
+}
