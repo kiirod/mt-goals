@@ -153,6 +153,55 @@
   const cancelNameBtn = document.getElementById('cancel-name-btn');
   const nameModalDesc = document.getElementById('name-modal-desc');
 
+// ── Admin ────────────────────────────────────────────────────────────────
+let adminAuthed = false;
+let adminKey = '';
+
+window.auth = async function(key) {
+  const res = await fetch('/api/delete-post', {
+    method: 'DELETE',
+    headers: { 'x-delete-key': key, 'Content-Type': 'application/json' },
+    body: JSON.stringify({})
+  });
+  const text = await res.text();
+  if (text === '1') {
+    adminAuthed = true;
+    adminKey = key;
+    showDeleteButtons();
+    console.log('1 — authenticated, delete buttons visible');
+  } else {
+    console.log('-1 — wrong key');
+  }
+}
+
+function showDeleteButtons() {
+  document.querySelectorAll('.post-card, .reply-card').forEach(card => {
+    if (card.querySelector('.admin-delete-btn')) return; // already has one
+    const postId = card.dataset.id;
+    const btn = document.createElement('button');
+    btn.className = 'admin-delete-btn reply-btn';
+    btn.textContent = 'delete';
+    btn.style.color = 'rgba(255,80,80,0.6)';
+    btn.onclick = async () => {
+      if (!confirm('Delete this post?')) return;
+      const res = await fetch('/api/delete-post', {
+        method: 'DELETE',
+        headers: { 'x-delete-key': adminKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postId: parseInt(postId) })
+      });
+      const text = await res.text();
+      if (text === '1') {
+        card.remove();
+      } else {
+        alert('Failed to delete');
+      }
+    };
+    // append to actions or meta row
+    const actions = card.querySelector('.post-actions') || card.querySelector('.reply-meta');
+    if (actions) actions.appendChild(btn);
+  });
+}
+
   function sbHeaders() {
     return {
       'apikey': sbKey,
