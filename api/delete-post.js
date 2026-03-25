@@ -11,11 +11,11 @@ export default async function handler(req) {
   // auth check only, no postId supplied
   if (!postId) return new Response('1', { status: 200 });
 
-  const res = await fetch(`${process.env.SUPABASE_URL}/rest/v1/posts?id=eq.${postId}`, {
+const res = await fetch(`${process.env.SB_URL}/rest/v1/posts?id=eq.${postId}`, {
     method: 'DELETE',
     headers: {
-      'apikey': process.env.SUPABASE_KEY,
-      'Authorization': 'Bearer ' + process.env.SUPABASE_KEY,
+      'apikey': process.env.SB_KEY,
+      'Authorization': 'Bearer ' + process.env.SB_KEY,
     }
   });
 
