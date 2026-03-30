@@ -142,6 +142,18 @@
       white-space: nowrap;
     }
 
+    .word-counter {
+      font-size: 0.72rem;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .word-counter.under {
+      color: #e2b714;
+    }
+    .word-counter.met {
+      color: rgba(255,255,255,0.5);
+    }
+
     .pin-btn, .cancel-btn {
       background: none;
       border: none;
@@ -151,13 +163,18 @@
       white-space: nowrap;
       padding: 4px 8px;
       border-radius: 4px;
-      transition: background 0.15s;
+      transition: background 0.15s, opacity 0.15s;
     }
 
     .pin-btn {
       color: #e2b714;
     }
     .pin-btn:hover { background: rgba(226,183,20,0.12); }
+    .pin-btn.disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .pin-btn.disabled:hover { background: none; }
 
     .cancel-btn {
       color: rgba(255,255,255,0.45);
@@ -240,6 +257,11 @@
       height: 3.5px;
       border-radius: 50%;
       background: #fff;
+    }
+
+    .drag-handle.hidden {
+      visibility: hidden;
+      pointer-events: none;
     }
 
     .drop-indicator {
@@ -402,6 +424,7 @@ const THEME_KEY   = 'monkeytype_goals_theme';
 const container   = document.getElementById('goalsContainer');
 const addBtn      = document.getElementById('addBtn');
 const MAX         = 180;
+const MIN_LETTERS = 10;
 
 const themeBtn        = document.getElementById('themeToggleBtn');
 const themeLabel      = document.getElementById('themeLabel');
@@ -477,6 +500,21 @@ function loadGoals() {
 
 function saveGoals(goals) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
+}
+
+function updateDragHandles() {
+  const cards = getCards();
+  const show = cards.length >= 2;
+  cards.forEach(card => {
+    const handle = card.querySelector('.drag-handle');
+    if (handle) {
+      if (show) {
+        handle.classList.remove('hidden');
+      } else {
+        handle.classList.add('hidden');
+      }
+    }
+  });
 }
 
 let dragSrc = null;
@@ -616,13 +654,14 @@ function renderGoal(text, id) {
       fill="#ffffff"/>
   </svg>`;
 
-delBtn.addEventListener('click', () => {
-  launchConfetti();
-  card.classList.add('fading');
+  delBtn.addEventListener('click', () => {
+    launchConfetti();
+    card.classList.add('fading');
     card.addEventListener('animationend', () => {
       card.remove();
       const goals = loadGoals().filter(g => g.id !== id);
       saveGoals(goals);
+      updateDragHandles();
     });
   });
 
@@ -641,6 +680,8 @@ delBtn.addEventListener('click', () => {
   card.appendChild(actions);
 
   container.appendChild(card);
+
+  updateDragHandles();
 }
 
 function showInputRow() {
@@ -653,17 +694,11 @@ function showInputRow() {
   ta.placeholder = 'Type your goal here...';
   ta.maxLength = MAX;
 
-  ta.addEventListener('input', () => {
-    ta.style.height = 'auto';
-    ta.style.height = ta.scrollHeight + 'px';
-    counter.textContent = `${ta.value.length}/${MAX}`;
-  });
-
   const actionsEl = document.createElement('div');
   actionsEl.className = 'input-actions';
 
   const pinBtn = document.createElement('button');
-  pinBtn.className = 'pin-btn';
+  pinBtn.className = 'pin-btn disabled';
   pinBtn.textContent = 'Pin';
 
   const cancelBtn = document.createElement('button');
@@ -674,8 +709,32 @@ function showInputRow() {
   counter.className = 'char-counter';
   counter.textContent = `0/${MAX}`;
 
+  const wordCounter = document.createElement('span');
+  wordCounter.className = 'word-counter under';
+  wordCounter.textContent = `0/${MIN_LETTERS} `;
+
+  ta.addEventListener('input', () => {
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+    counter.textContent = `${ta.value.length}/${MAX}`;
+
+    const letters = ta.value.trim().length;
+    wordCounter.textContent = `${letters}/${MIN_LETTERS} `;
+
+    if (letters >= MIN_LETTERS) {
+      wordCounter.classList.remove('under');
+      wordCounter.classList.add('met');
+      pinBtn.classList.remove('disabled');
+    } else {
+      wordCounter.classList.remove('met');
+      wordCounter.classList.add('under');
+      pinBtn.classList.add('disabled');
+    }
+  });
+
   function pinGoal() {
     const text = ta.value.trim();
+    if (text.length < MIN_LETTERS) return;
     if (!text) {
       row.remove();
       addBtn.style.display = '';
@@ -702,9 +761,10 @@ function showInputRow() {
     if (e.key === 'Escape') { cancelGoal(); }
   });
 
+  actionsEl.appendChild(wordCounter);
+  actionsEl.appendChild(counter);
   actionsEl.appendChild(pinBtn);
   actionsEl.appendChild(cancelBtn);
-  actionsEl.appendChild(counter);
   row.appendChild(ta);
   row.appendChild(actionsEl);
 
