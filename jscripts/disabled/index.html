@@ -87,10 +87,19 @@
       line-height: 1.6;
     }
 
-            .footer {
+    .footer {
       position: fixed;
       bottom: 28px;
       left: 28px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .footer-right {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -132,7 +141,7 @@
 <body>
 
 <header>
-  <img src="https://mtgoals.cc/images/mtgoals.png" alt="Monkeytype Goals" class="logo" />
+  <img src="https://mtgoals.cc/images/mtg_notheme.png" alt="Monkeytype Goals" class="logo" />
   <p>Not promoted or endorsed by Miodec.</p>
   <a class="mt-link" href="https://monkeytype.com" target="_blank" rel="noopener noreferrer">
     monkeytype.com
@@ -152,7 +161,7 @@
     discord
   </a>
   <span class="footer-divider">/</span>
-  <a class="footer-link" href="https://github.com/pypppe/mt-goals" target="_blank" rel="noopener noreferrer">
+  <a class="footer-link" href="https://github.com/konatify/mt-goals" target="_blank" rel="noopener noreferrer">
     <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M8.01005 0.858582L6.01005 14.8586L7.98995 15.1414L9.98995 1.14142L8.01005 0.858582Z" fill="currentColor"/>
       <path d="M12.5 11.5L11.0858 10.0858L13.1716 8L11.0858 5.91422L12.5 4.5L16 8L12.5 11.5Z" fill="currentColor"/>
@@ -160,7 +169,13 @@
     </svg>
     github
   </a>
-</footer>
+  <span class="footer-divider">/</span>
+<a class="footer-link" href="/pages/policy">
+  <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M4 6V4C4 1.79086 5.79086 0 8 0C10.2091 0 12 1.79086 12 4V6H14V16H2V6H4ZM6 4C6 2.89543 6.89543 2 8 2C9.10457 2 10 2.89543 10 4V6H6V4ZM7 13V9H9V13H7Z" fill="currentColor"/>
+  </svg>
+  policy
+</a>
 
 <div class="container">
   <div class="noscript-card">
