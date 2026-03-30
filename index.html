@@ -360,6 +360,23 @@
   flex-shrink: 0;
   opacity: inherit;
 }
+
+.goal-edit-row {
+  display: flex; align-items: flex-start; background-color: #2b2d31;
+  border-radius: 8px; padding: 10px 14px; gap: 12px; animation: fadeIn 0.2s ease;
+  box-shadow: 0 0 0 2px #e2b714;
+}
+.goal-edit-row textarea {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: #fff; font-family: 'Roboto Mono', monospace; font-size: 0.88rem;
+  resize: none; min-height: 42px; line-height: 1.5; padding-top: 4px;
+}
+.edit-btn {
+  background: none; border: none; cursor: pointer; padding: 2px;
+  flex-shrink: 0; opacity: 0.55; transition: opacity 0.15s; display: flex; align-items: center;
+}
+.edit-btn:hover { opacity: 1; }
+.edit-btn svg { width: 18px; height: 18px; display: block; }
   </style>
 </head>
 <body>
@@ -645,6 +662,12 @@ function renderGoal(text, id) {
   const actions = document.createElement('div');
   actions.className = 'goal-card-actions';
 
+const editBtn = document.createElement('button');
+editBtn.className = 'edit-btn';
+editBtn.title = 'Edit goal';
+editBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.56078 20.2501L20.5608 8.25011L15.7501 3.43945L3.75012 15.4395V20.2501H8.56078ZM15.7501 5.56077L18.4395 8.25011L16.5001 10.1895L13.8108 7.50013L15.7501 5.56077ZM12.7501 8.56079L15.4395 11.2501L7.93946 18.7501H5.25012L5.25012 16.0608L12.7501 8.56079Z" fill="#ffffff"></path></svg>`;
+editBtn.addEventListener('click', () => showEditRow(card, id, textEl.textContent));
+
   const delBtn = document.createElement('button');
   delBtn.className = 'delete-btn';
   delBtn.title = 'Remove goal';
@@ -673,7 +696,8 @@ function renderGoal(text, id) {
   handle.addEventListener('mousedown', e => onHandleMouseDown(e, card, id));
   handle.addEventListener('touchstart', e => onHandleTouchStart(e, card, id), { passive: true });
 
-  actions.appendChild(delBtn);
+actions.appendChild(editBtn);
+actions.appendChild(delBtn);
 
   card.appendChild(handle);
   card.appendChild(textEl);
@@ -793,6 +817,46 @@ function launchConfetti() {
     angle: 120,
     origin: { x: 1, y: 1 }
   });
+}
+
+function showEditRow(card, id, currentText) {
+  const editRow = document.createElement('div');
+  editRow.className = 'goal-edit-row';
+  const ta = document.createElement('textarea');
+  ta.value = currentText;
+  const actionsEl = document.createElement('div');
+  actionsEl.className = 'input-actions';
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'pin-btn';
+  saveBtn.textContent = 'Save';
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'cancel-btn';
+  cancelBtn.textContent = 'Cancel';
+  function saveEdit() {
+    const newText = ta.value.trim();
+    if (newText.length < MIN_LETTERS) return;
+    const goals = loadGoals();
+    const idx = goals.findIndex(g => g.id === id);
+    if (idx !== -1) { goals[idx].text = newText; saveGoals(goals); }
+    card.querySelector('.goal-text').textContent = newText;
+    editRow.remove();
+    card.style.display = '';
+  }
+  function cancelEdit() { editRow.remove(); card.style.display = ''; }
+  saveBtn.addEventListener('click', saveEdit);
+  cancelBtn.addEventListener('click', cancelEdit);
+  ta.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); saveEdit(); }
+    if (e.key === 'Escape') cancelEdit();
+  });
+  actionsEl.appendChild(saveBtn);
+  actionsEl.appendChild(cancelBtn);
+  editRow.appendChild(ta);
+  editRow.appendChild(actionsEl);
+  card.style.display = 'none';
+  card.after(editRow);
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length);
 }
 </script>
 </body>
