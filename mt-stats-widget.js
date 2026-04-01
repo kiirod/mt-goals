@@ -3,10 +3,21 @@
 (function () {
   const LS_USER = 'mt_username';
   const LS_KEY  = 'mt_ape_key';
+  const LS_THEME = 'monkeytype_goals_theme';
   const API     = 'https://api.monkeytype.com';
 
-  const style = document.createElement('style');
-  style.textContent = `
+  function getAccent() {
+    return localStorage.getItem(LS_THEME) === 'discord' ? '#5974ea' : '#e2b714';
+  }
+
+  function buildStyles() {
+    const accent = getAccent();
+    const existingStyle = document.getElementById('mt-widget-style');
+    if (existingStyle) existingStyle.remove();
+
+    const style = document.createElement('style');
+    style.id = 'mt-widget-style';
+    style.textContent = `
     #mt-widget {
       position: fixed;
       top: 20px;
@@ -97,7 +108,7 @@
     }
     .mt-stat { display: flex; flex-direction: column; }
     .mt-stat-value {
-      color: #e2b714;
+      color: ${accent};
       font-size: 0.8rem;
       font-weight: 500;
       line-height: 1.2;
@@ -140,9 +151,9 @@
     }
     #mt-widget:hover #mt-widget-disconnect { display: flex; }
     #mt-widget-disconnect:hover {
-      background: #e2b714;
+      background: ${accent};
       color: #1a1b1e;
-      border-color: #e2b714;
+      border-color: ${accent};
     }
 
     .mt-pulse {
@@ -188,7 +199,7 @@
       margin-top: -10px;
     }
     #mt-modal-desc a {
-      color: #e2b714;
+      color: ${accent};
       text-decoration: none;
     }
     #mt-modal-desc a:hover { text-decoration: underline; }
@@ -211,7 +222,7 @@
       outline: none;
       transition: border-color 0.15s;
     }
-    .mt-field input:focus { border-color: rgba(226,183,20,0.6); }
+    .mt-field input:focus { border-color: ${accent}99; }
     .mt-field input::placeholder { color: rgba(255,255,255,0.18); }
 
     #mt-modal-error {
@@ -241,7 +252,7 @@
       color: rgba(255,255,255,0.65);
     }
     #mt-modal-save {
-      background: #e2b714;
+      background: ${accent};
       border: none;
       border-radius: 6px;
       color: #1a1b1e;
@@ -252,7 +263,7 @@
       padding: 8px 18px;
       transition: background 0.15s, opacity 0.15s;
     }
-    #mt-modal-save:hover:not(:disabled) { background: #f0c620; }
+    #mt-modal-save:hover:not(:disabled) { filter: brightness(1.12); }
     #mt-modal-save:disabled { opacity: 0.45; cursor: default; }
 
     #mt-disc-overlay {
@@ -303,7 +314,7 @@
       width: 100%;
     }
     #mt-disc-yes {
-      background: #e2b714;
+      background: ${accent};
       border: none;
       border-radius: 6px;
       color: #1a1b1e;
@@ -314,7 +325,7 @@
       padding: 8px 16px;
       transition: background 0.15s;
     }
-    #mt-disc-yes:hover { background: #f0c620; }
+    #mt-disc-yes:hover { filter: brightness(1.12); }
     #mt-disc-no {
       background: #c0392b;
       border: none;
@@ -342,7 +353,10 @@
       50%       { opacity: 0.35; }
     }
   `;
-  document.head.appendChild(style);
+    document.head.appendChild(style);
+  }
+
+  buildStyles();
 
   const widget = document.createElement('div');
   widget.id = 'mt-widget';
@@ -386,7 +400,8 @@
     if (!Array.isArray(arr) || arr.length === 0) return null;
     return Math.round(arr.reduce((best, r) => r.wpm > best ? r.wpm : best, 0));
   }
-function renderConnectBtn(errorMsg) {
+
+  function renderConnectBtn(errorMsg) {
     widget.innerHTML = '';
     const btn = document.createElement('button');
     btn.id = 'mt-connect-btn';
@@ -595,6 +610,7 @@ function renderConnectBtn(errorMsg) {
   }
 
   function openModal() {
+    buildStyles();
     const overlay = document.createElement('div');
     overlay.id = 'mt-modal-overlay';
     overlay.innerHTML = `
@@ -684,6 +700,10 @@ function renderConnectBtn(errorMsg) {
       }
     });
   }
+
+  window.addEventListener('storage', (e) => {
+    if (e.key === LS_THEME) buildStyles();
+  });
 
   const savedUser = localStorage.getItem(LS_USER);
   const savedKey  = localStorage.getItem(LS_KEY);
