@@ -1,10 +1,26 @@
 // Credentials stored in localStorage only
 
 (function () {
-  const LS_USER = 'mt_username';
-  const LS_KEY  = 'mt_ape_key';
+  const LS_USER  = 'mt_username';
+  const LS_KEY   = 'mt_ape_key';
   const LS_THEME = 'monkeytype_goals_theme';
-  const API     = 'https://api.monkeytype.com';
+  const API      = 'https://api.monkeytype.com';
+
+  const MT_LOGO_SVG = `<svg viewBox="-690 -1040 320 200" fill="white" xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <path d="M -430 -910 L -430 -910 C -424.481 -910 -420 -905.519 -420 -900 L -420 -900 C -420 -894.481 -424.481 -890 -430 -890 L -430 -890 C -435.519 -890 -440 -894.481 -440 -900 L -440 -900 C -440 -905.519 -435.519 -910 -430 -910 Z"/>
+      <path d="M -570 -910 L -510 -910 C -504.481 -910 -500 -905.519 -500 -900 L -500 -900 C -500 -894.481 -504.481 -890 -510 -890 L -570 -890 C -575.519 -890 -580 -894.481 -580 -900 L -580 -900 C -580 -905.519 -575.519 -910 -570 -910 Z"/>
+      <path d="M -590 -970 L -590 -970 C -584.481 -970 -580 -965.519 -580 -960 L -580 -940 C -580 -934.481 -584.481 -930 -590 -930 L -590 -930 C -595.519 -930 -600 -934.481 -600 -940 L -600 -960 C -600 -965.519 -595.519 -970 -590 -970 Z"/>
+      <path d="M -639.991 -960.515 C -639.72 -976.836 -626.385 -990 -610 -990 L -610 -990 C -602.32 -990 -595.31 -987.108 -590 -982.355 C -584.69 -987.108 -577.68 -990 -570 -990 L -570 -990 C -553.615 -990 -540.28 -976.836 -540.009 -960.515 C -540.001 -960.345 -540 -960.172 -540 -960 L -540 -960 L -540 -940 C -540 -934.481 -544.481 -930 -550 -930 L -550 -930 C -555.519 -930 -560 -934.481 -560 -940 L -560 -960 L -560 -960 C -560 -965.519 -564.481 -970 -570 -970 C -575.519 -970 -580 -965.519 -580 -960 L -580 -960 L -580 -960 L -580 -940 C -580 -934.481 -584.481 -930 -590 -930 L -590 -930 C -595.519 -930 -600 -934.481 -600 -940 L -600 -960 L -600 -960 L -600 -960 L -600 -960 L -600 -960 L -600 -960 L -600 -960 L -600 -960 C -600 -965.519 -604.481 -970 -610 -970 C -615.519 -970 -620 -965.519 -620 -960 L -620 -960 L -620 -940 C -620 -934.481 -624.481 -930 -630 -930 L -630 -930 C -635.519 -930 -640 -934.481 -640 -940 L -640 -960 L -640 -960 C -640 -960.172 -639.996 -960.344 -639.991 -960.515 Z"/>
+      <path d="M -460 -930 L -460 -900 C -460 -894.481 -464.481 -890 -470 -890 L -470 -890 C -475.519 -890 -480 -894.481 -480 -900 L -480 -930 L -508.82 -930 C -514.99 -930 -520 -934.481 -520 -940 L -520 -940 C -520 -945.519 -514.99 -950 -508.82 -950 L -431.18 -950 C -425.01 -950 -420 -945.519 -420 -940 L -420 -940 C -420 -934.481 -425.01 -930 -431.18 -930 L -460 -930 Z"/>
+      <path d="M -470 -990 L -430 -990 C -424.481 -990 -420 -985.519 -420 -980 L -420 -980 C -420 -974.481 -424.481 -970 -430 -970 L -470 -970 C -475.519 -970 -480 -974.481 -480 -980 L -480 -980 C -480 -985.519 -475.519 -990 -470 -990 Z"/>
+      <path d="M -630 -910 L -610 -910 C -604.481 -910 -600 -905.519 -600 -900 L -600 -900 C -600 -894.481 -604.481 -890 -610 -890 L -630 -890 C -635.519 -890 -640 -894.481 -640 -900 L -640 -900 C -640 -905.519 -635.519 -910 -630 -910 Z"/>
+      <path d="M -515 -990 L -510 -990 C -504.481 -990 -500 -985.519 -500 -980 L -500 -980 C -500 -974.481 -504.481 -970 -510 -970 L -515 -970 C -520.519 -970 -525 -974.481 -525 -980 L -525 -980 C -525 -985.519 -520.519 -990 -515 -990 Z"/>
+      <path d="M -660 -910 L -680 -910 L -680 -980 C -680 -1007.596 -657.596 -1030 -630 -1030 L -430 -1030 C -402.404 -1030 -380 -1007.596 -380 -980 L -380 -900 C -380 -872.404 -402.404 -850 -430 -850 L -630 -850 C -657.596 -850 -680 -872.404 -680 -900 L -680 -920 L -660 -920 L -660 -900 C -660 -883.443 -646.557 -870 -630 -870 L -430 -870 C -413.443 -870 -400 -883.443 -400 -900 L -400 -980 C -400 -996.557 -413.443 -1010 -430 -1010 L -630 -1010 C -646.557 -1010 -660 -996.557 -660 -980 L -660 -910 Z"/>
+    </g>
+  </svg>`;
+
+  const INFO_SVG = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5 12C19.5 16.1421 16.1421 19.5 12 19.5C7.85786 19.5 4.5 16.1421 4.5 12C4.5 7.85786 7.85786 4.5 12 4.5C16.1421 4.5 19.5 7.85786 19.5 12ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM11.25 13.5V8.25H12.75V13.5H11.25ZM11.25 15.75V14.25H12.75V15.75H11.25Z" fill="#ffffff"></path></svg>`;
 
   function getAccent() {
     return localStorage.getItem(LS_THEME) === 'discord' ? '#5974ea' : '#e2b714';
@@ -12,8 +28,8 @@
 
   function buildStyles() {
     const accent = getAccent();
-    const existingStyle = document.getElementById('mt-widget-style');
-    if (existingStyle) existingStyle.remove();
+    const existing = document.getElementById('mt-widget-style');
+    if (existing) existing.remove();
 
     const style = document.createElement('style');
     style.id = 'mt-widget-style';
@@ -177,39 +193,81 @@
     #mt-modal {
       background: #2b2d31;
       border-radius: 12px;
-      padding: 26px 26px 22px;
+      padding: 24px 24px 20px;
       width: 100%;
-      max-width: 390px;
+      max-width: 380px;
       font-family: 'Roboto Mono', monospace;
       box-shadow: 0 8px 40px rgba(0,0,0,0.6);
       animation: mtSlideUp 0.2s ease;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 16px;
     }
-    #mt-modal-title {
-      color: #fff;
-      font-size: 0.95rem;
+
+    #mt-modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    #mt-modal-header-logo {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #mt-modal-header-logo svg {
+      width: 36px;
+      height: 36px;
+    }
+    #mt-modal-header-title {
+      color: rgba(255,255,255,0.88);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    #mt-modal-tutorial-label {
+      color: rgba(255,255,255,0.82);
+      font-size: 0.78rem;
       font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      margin-bottom: 8px;
     }
-    #mt-modal-desc {
-      color: rgba(255,255,255,0.4);
-      font-size: 0.73rem;
+    #mt-modal-tutorial-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .mt-tutorial-step {
+      color: rgba(255,255,255,0.42);
+      font-size: 0.72rem;
       line-height: 1.65;
-      margin-top: -10px;
     }
-    #mt-modal-desc a {
+    .mt-tutorial-step a {
       color: ${accent};
       text-decoration: none;
     }
-    #mt-modal-desc a:hover { text-decoration: underline; }
+    .mt-tutorial-step a:hover { text-decoration: underline; }
+    .mt-tutorial-underline {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
 
     .mt-field { display: flex; flex-direction: column; gap: 5px; }
-    .mt-field label {
-      color: rgba(255,255,255,0.45);
+    .mt-field-label {
+      color: rgba(255,255,255,0.5);
       font-size: 0.68rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .mt-field-label-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .mt-field input {
       background: #313338;
@@ -221,20 +279,62 @@
       padding: 9px 11px;
       outline: none;
       transition: border-color 0.15s;
+      width: 100%;
+      box-sizing: border-box;
     }
     .mt-field input:focus { border-color: ${accent}99; }
     .mt-field input::placeholder { color: rgba(255,255,255,0.18); }
+
+    .mt-info-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.35;
+      cursor: default;
+      transition: opacity 0.15s;
+    }
+    .mt-info-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+    .mt-info-icon:hover { opacity: 0.7; }
+    .mt-info-tooltip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e2023;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 8px 11px;
+      color: rgba(255,255,255,0.55);
+      font-size: 0.66rem;
+      line-height: 1.6;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 10;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.45);
+    }
+    .mt-info-icon:hover .mt-info-tooltip { display: block; }
 
     #mt-modal-error {
       color: #f04747;
       font-size: 0.72rem;
       display: none;
-      margin-top: -10px;
+      margin-top: -8px;
     }
+
+    /* ── Actions ── */
     #mt-modal-actions {
       display: flex;
       gap: 8px;
       justify-content: flex-end;
+      padding-top: 2px;
     }
     #mt-modal-cancel {
       background: none;
@@ -261,11 +361,12 @@
       font-weight: 600;
       cursor: pointer;
       padding: 8px 18px;
-      transition: background 0.15s, opacity 0.15s;
+      transition: filter 0.15s, opacity 0.15s;
     }
     #mt-modal-save:hover:not(:disabled) { filter: brightness(1.12); }
     #mt-modal-save:disabled { opacity: 0.45; cursor: default; }
 
+    /* ── Disconnect confirm ── */
     #mt-disc-overlay {
       position: fixed;
       inset: 0;
@@ -291,16 +392,8 @@
       align-items: center;
       gap: 16px;
     }
-    #mt-disc-icon {
-      opacity: 0.5;
-      width: 40px;
-      height: 40px;
-      margin-top: 2px;
-    }
-    #mt-disc-icon svg {
-      width: 40px;
-      height: 40px;
-    }
+    #mt-disc-icon { opacity: 0.5; width: 40px; height: 40px; margin-top: 2px; }
+    #mt-disc-icon svg { width: 40px; height: 40px; }
     #mt-disc-text {
       color: rgba(255,255,255,0.8);
       font-size: 0.82rem;
@@ -323,7 +416,7 @@
       font-weight: 600;
       cursor: pointer;
       padding: 8px 16px;
-      transition: background 0.15s;
+      transition: filter 0.15s;
     }
     #mt-disc-yes:hover { filter: brightness(1.12); }
     #mt-disc-no {
@@ -409,21 +502,7 @@
       btn.style.color = '#f04747';
       btn.textContent = errorMsg;
     } else {
-      btn.innerHTML = `
-        <svg viewBox="-690 -1040 320 200" fill="white" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path d="M -430 -910 L -430 -910 C -424.481 -910 -420 -905.519 -420 -900 L -420 -900 C -420 -894.481 -424.481 -890 -430 -890 L -430 -890 C -435.519 -890 -440 -894.481 -440 -900 L -440 -900 C -440 -905.519 -435.519 -910 -430 -910 Z"/>
-            <path d="M -570 -910 L -510 -910 C -504.481 -910 -500 -905.519 -500 -900 L -500 -900 C -500 -894.481 -504.481 -890 -510 -890 L -570 -890 C -575.519 -890 -580 -894.481 -580 -900 L -580 -900 C -580 -905.519 -575.519 -910 -570 -910 Z"/>
-            <path d="M -590 -970 L -590 -970 C -584.481 -970 -580 -965.519 -580 -960 L -580 -940 C -580 -934.481 -584.481 -930 -590 -930 L -590 -930 C -595.519 -930 -600 -934.481 -600 -940 L -600 -960 C -600 -965.519 -595.519 -970 -590 -970 Z"/>
-            <path d="M -639.991 -960.515 C -639.72 -976.836 -626.385 -990 -610 -990 L -610 -990 C -602.32 -990 -595.31 -987.108 -590 -982.355 C -584.69 -987.108 -577.68 -990 -570 -990 L -570 -990 C -553.615 -990 -540.28 -976.836 -540.009 -960.515 C -540.001 -960.345 -540 -960.172 -540 -960 L -540 -960 L -540 -940 C -540 -934.481 -544.481 -930 -550 -930 L -550 -930 C -555.519 -930 -560 -934.481 -560 -940 L -560 -960 L -560 -960 C -560 -965.519 -564.481 -970 -570 -970 C -575.519 -970 -580 -965.519 -580 -960 L -580 -960 L -580 -960 L -580 -940 C -580 -934.481 -584.481 -930 -590 -930 L -590 -930 C -595.519 -930 -600 -934.481 -600 -940 L -600 -960 L -600 -960 L -600 -960 L -600 -960 L -600 -960 L -600 -960 L -600 -960 L -600 -960 C -600 -965.519 -604.481 -970 -610 -970 C -615.519 -970 -620 -965.519 -620 -960 L -620 -960 L -620 -940 C -620 -934.481 -624.481 -930 -630 -930 L -630 -930 C -635.519 -930 -640 -934.481 -640 -940 L -640 -960 L -640 -960 C -640 -960.172 -639.996 -960.344 -639.991 -960.515 Z"/>
-            <path d="M -460 -930 L -460 -900 C -460 -894.481 -464.481 -890 -470 -890 L -470 -890 C -475.519 -890 -480 -894.481 -480 -900 L -480 -930 L -508.82 -930 C -514.99 -930 -520 -934.481 -520 -940 L -520 -940 C -520 -945.519 -514.99 -950 -508.82 -950 L -431.18 -950 C -425.01 -950 -420 -945.519 -420 -940 L -420 -940 C -420 -934.481 -425.01 -930 -431.18 -930 L -460 -930 Z"/>
-            <path d="M -470 -990 L -430 -990 C -424.481 -990 -420 -985.519 -420 -980 L -420 -980 C -420 -974.481 -424.481 -970 -430 -970 L -470 -970 C -475.519 -970 -480 -974.481 -480 -980 L -480 -980 C -480 -985.519 -475.519 -990 -470 -990 Z"/>
-            <path d="M -630 -910 L -610 -910 C -604.481 -910 -600 -905.519 -600 -900 L -600 -900 C -600 -894.481 -604.481 -890 -610 -890 L -630 -890 C -635.519 -890 -640 -894.481 -640 -900 L -640 -900 C -640 -905.519 -635.519 -910 -630 -910 Z"/>
-            <path d="M -515 -990 L -510 -990 C -504.481 -990 -500 -985.519 -500 -980 L -500 -980 C -500 -974.481 -504.481 -970 -510 -970 L -515 -970 C -520.519 -970 -525 -974.481 -525 -980 L -525 -980 C -525 -985.519 -520.519 -990 -515 -990 Z"/>
-            <path d="M -660 -910 L -680 -910 L -680 -980 C -680 -1007.596 -657.596 -1030 -630 -1030 L -430 -1030 C -402.404 -1030 -380 -1007.596 -380 -980 L -380 -900 C -380 -872.404 -402.404 -850 -430 -850 L -630 -850 C -657.596 -850 -680 -872.404 -680 -900 L -680 -920 L -660 -920 L -660 -900 C -660 -883.443 -646.557 -870 -630 -870 L -430 -870 C -413.443 -870 -400 -883.443 -400 -900 L -400 -980 C -400 -996.557 -413.443 -1010 -430 -1010 L -630 -1010 C -646.557 -1010 -660 -996.557 -660 -980 L -660 -910 Z"/>
-          </g>
-        </svg>
-        connect mt`;
+      btn.innerHTML = `${MT_LOGO_SVG} connect mt`;
     }
     btn.addEventListener('click', openModal);
     widget.appendChild(btn);
@@ -487,16 +566,13 @@
 
     const yesBtn = document.getElementById('mt-disc-yes');
     const noBtn  = document.getElementById('mt-disc-no');
-
-    const close = () => overlay.remove();
+    const close  = () => overlay.remove();
 
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
-
     const escHandler = e => { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); } };
     document.addEventListener('keydown', escHandler);
 
     noBtn.addEventListener('click', close);
-
     yesBtn.addEventListener('click', () => {
       localStorage.removeItem(LS_USER);
       localStorage.removeItem(LS_KEY);
@@ -514,7 +590,7 @@
     card.target = '_blank';
     card.rel = 'noopener noreferrer';
     card.title = 'View Monkeytype profile';
-    
+
     let avatarEl;
     if (discordId && discordAvatar) {
       const img = document.createElement('img');
@@ -613,51 +689,124 @@
     buildStyles();
     const overlay = document.createElement('div');
     overlay.id = 'mt-modal-overlay';
-    overlay.innerHTML = `
-      <div id="mt-modal">
-        <div id="mt-modal-title">Connect Monkeytype</div>
-        <div id="mt-modal-desc">
-          Your credentials are saved only in your browser.<br><br>
-          Get your Ape Key from
-          <a href="https://monkeytype.com/account-settings?tab=apeKeys" target="_blank" rel="noopener">
-            account settings → Ape Keys
-          </a>.
-          Make sure the key is <strong style="color:rgba(255,255,255,0.55)">activated</strong> (tick the checkbox next to it).
-        </div>
-        <div class="mt-field">
-          <label>Monkeytype username</label>
-          <input id="mt-input-user" type="text" placeholder="your username" autocomplete="off" spellcheck="false"/>
-        </div>
-        <div class="mt-field">
-          <label>Ape Key</label>
-          <input id="mt-input-key" type="password" placeholder="paste your Ape Key here" autocomplete="off" spellcheck="false"/>
-        </div>
-        <div id="mt-modal-error"></div>
-        <div id="mt-modal-actions">
-          <button id="mt-modal-cancel">cancel</button>
-          <button id="mt-modal-save">connect</button>
-        </div>
-      </div>
-    `;
     document.body.appendChild(overlay);
 
-    const userInput = document.getElementById('mt-input-user');
-    const keyInput  = document.getElementById('mt-input-key');
-    const saveBtn   = document.getElementById('mt-modal-save');
-    const cancelBtn = document.getElementById('mt-modal-cancel');
-    const errorEl   = document.getElementById('mt-modal-error');
+    const modal = document.createElement('div');
+    modal.id = 'mt-modal';
+    overlay.appendChild(modal);
 
+    const header = document.createElement('div');
+    header.id = 'mt-modal-header';
+
+    const logoWrap = document.createElement('div');
+    logoWrap.id = 'mt-modal-header-logo';
+    logoWrap.innerHTML = MT_LOGO_SVG;
+
+    const titleEl = document.createElement('div');
+    titleEl.id = 'mt-modal-header-title';
+    titleEl.textContent = 'connection';
+
+    header.appendChild(logoWrap);
+    header.appendChild(titleEl);
+    modal.appendChild(header);
+
+    const tutorialWrap = document.createElement('div');
+
+    const tutorialLabel = document.createElement('div');
+    tutorialLabel.id = 'mt-modal-tutorial-label';
+    tutorialLabel.textContent = 'Tutorial';
+
+    const steps = document.createElement('div');
+    steps.id = 'mt-modal-tutorial-steps';
+
+    const step1 = document.createElement('div');
+    step1.className = 'mt-tutorial-step';
+    step1.innerHTML = `1. Get your ape key by clicking <a href="https://monkeytype.com/account-settings?tab=apeKeys" target="_blank" rel="noopener">here</a>.`;
+
+    const step2 = document.createElement('div');
+    step2.className = 'mt-tutorial-step';
+    step2.innerHTML = `2. Make sure it is <span class="mt-tutorial-underline">activated</span> by clicking the checkbox next to it.`;
+
+    steps.appendChild(step1);
+    steps.appendChild(step2);
+    tutorialWrap.appendChild(tutorialLabel);
+    tutorialWrap.appendChild(steps);
+    modal.appendChild(tutorialWrap);
+
+    const userField = document.createElement('div');
+    userField.className = 'mt-field';
+
+    const userLabel = document.createElement('div');
+    userLabel.className = 'mt-field-label';
+    userLabel.textContent = 'Monkeytype Username';
+
+    const userInput = document.createElement('input');
+    userInput.id = 'mt-input-user';
+    userInput.type = 'text';
+    userInput.placeholder = 'your username';
+    userInput.autocomplete = 'off';
+    userInput.spellcheck = false;
     userInput.value = localStorage.getItem(LS_USER) || '';
-    keyInput.value  = localStorage.getItem(LS_KEY)  || '';
+
+    userField.appendChild(userLabel);
+    userField.appendChild(userInput);
+    modal.appendChild(userField);
+
+    const keyField = document.createElement('div');
+    keyField.className = 'mt-field';
+
+    const keyLabelRow = document.createElement('div');
+    keyLabelRow.className = 'mt-field-label-row';
+
+    const keyLabel = document.createElement('div');
+    keyLabel.className = 'mt-field-label';
+    keyLabel.textContent = 'Ape Key';
+
+    const infoIcon = document.createElement('div');
+    infoIcon.className = 'mt-info-icon';
+    infoIcon.innerHTML = `${INFO_SVG}<span class="mt-info-tooltip">This Ape Key is never shown to mtgoals.cc,<br>it stays on your computer.</span>`;
+
+    keyLabelRow.appendChild(keyLabel);
+    keyLabelRow.appendChild(infoIcon);
+
+    const keyInput = document.createElement('input');
+    keyInput.id = 'mt-input-key';
+    keyInput.type = 'password';
+    keyInput.placeholder = 'paste your Ape Key here';
+    keyInput.autocomplete = 'off';
+    keyInput.spellcheck = false;
+    keyInput.value = localStorage.getItem(LS_KEY) || '';
+
+    keyField.appendChild(keyLabelRow);
+    keyField.appendChild(keyInput);
+    modal.appendChild(keyField);
+
+    const errorEl = document.createElement('div');
+    errorEl.id = 'mt-modal-error';
+    modal.appendChild(errorEl);
+
+    const actions = document.createElement('div');
+    actions.id = 'mt-modal-actions';
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.id = 'mt-modal-cancel';
+    cancelBtn.textContent = 'cancel';
+
+    const saveBtn = document.createElement('button');
+    saveBtn.id = 'mt-modal-save';
+    saveBtn.textContent = 'connect';
+
+    actions.appendChild(cancelBtn);
+    actions.appendChild(saveBtn);
+    modal.appendChild(actions);
+
     userInput.focus();
 
     const close = () => overlay.remove();
     cancelBtn.addEventListener('click', close);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
-
     const escHandler = e => { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); } };
     document.addEventListener('keydown', escHandler);
-
     [userInput, keyInput].forEach(inp => {
       inp.addEventListener('keydown', e => { if (e.key === 'Enter') saveBtn.click(); });
     });
