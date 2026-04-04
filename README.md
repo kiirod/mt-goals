@@ -22,3 +22,6 @@ We have a Discord server for people who enjoy or want to support the development
 # License
 Our project uses the MIT License, to view the license, you can click [this](https://github.com/konatify/mt-goals/blob/main/LICENSE)
 
+# Suggest features
+
+Have a suggestion? [Open an issue](https://github.com/konatify/mt-goals/issues/new/choose)
