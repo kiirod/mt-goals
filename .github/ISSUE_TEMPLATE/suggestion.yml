@@ -1,0 +1,39 @@
+name: Suggestion
+description: Suggest a new update to be implemented into the website.
+title: "[Suggestion]: "
+labels: ["suggestion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your suggestion! Please fill out the form below.
+
+  - type: input
+    id: summary
+    attributes:
+      label: What are you suggesting?
+      placeholder: e.g. Add a dark mode toggle
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: Describe your suggestion
+      description: Give as much detail as you can about what you'd like to see added or changed.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why would this be useful?
+      description: Explain why this would improve the website.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have checked this hasn't already been suggested
+          required: true
