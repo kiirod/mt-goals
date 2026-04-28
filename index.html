@@ -572,6 +572,8 @@ const themeLabel      = document.getElementById('themeLabel');
 const themeStylesheet = document.getElementById('theme-stylesheet');
 const defaultStyle    = document.getElementById('default-style');
 const headerLogo      = document.getElementById('header-logo');
+const exportBtn = document.getElementById('exportBtn');
+const importBtn = document.getElementById('importBtn');
 
 let isDiscord = localStorage.getItem(THEME_KEY) === 'discord';
 
@@ -834,6 +836,8 @@ actions.appendChild(delBtn);
 
 function showInputRow() {
   addBtn.style.display = 'none';
+  exportBtn.style.display = 'none';
+  importBtn.style.display = 'none';
 
   const row = document.createElement('div');
   row.className = 'goal-input-row';
@@ -895,11 +899,16 @@ function showInputRow() {
     row.remove();
     addBtn.style.display = '';
     renderGoal(text, id);
+    addBtn.style.display = '';
+exportBtn.style.display = '';
+importBtn.style.display = '';
   }
 
   function cancelGoal() {
     row.remove();
-    addBtn.style.display = '';
+addBtn.style.display = '';
+exportBtn.style.display = '';
+importBtn.style.display = '';
   }
 
   pinBtn.addEventListener('click', pinGoal);
