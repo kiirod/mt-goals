@@ -1033,10 +1033,52 @@ function showImportConfirmModal(pendingGoals) {
 }
 
 let notifBtnLastClick = 0;
+let swReg = null;
+
+function idbOpen() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('mtgoals_sw', 1);
+    req.onupgradeneeded = e => e.target.result.createObjectStore('kv');
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror   = e => reject(e.target.error);
+  });
+}
+async function idbSet(key, value) {
+  const db = await idbOpen();
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction('kv', 'readwrite');
+    const req = tx.objectStore('kv').put(value, key);
+    req.onsuccess = () => resolve();
+    req.onerror   = () => reject(req.error);
+  });
+}
+
+async function syncToIDB() {
+  const goals    = loadGoals();
+  const schedule = getNotifSchedule();
+  const next     = localStorage.getItem(NOTIF_NEXT);
+  await Promise.all([
+    idbSet('monkeytype_goals',               goals),
+    idbSet('monkeytype_goals_notif_schedule', schedule),
+    idbSet('monkeytype_goals_notif_next',     next),
+  ]);
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').then(reg => {
+    swReg = reg;
+    if ('periodicSync' in reg) {
+      const schedule = getNotifSchedule();
+      const minInterval = schedule && schedule.ms ? schedule.ms : 86400000;
+      reg.periodicSync.register('goal-reminder', { minInterval })
+        .catch(() => {});
+    }
+  }).catch(() => {});
+}
 
 function updateNotifBtnState() {
   const schedule = getNotifSchedule();
-  const granted = localStorage.getItem(NOTIF_GRANTED) === 'true';
+  const granted  = localStorage.getItem(NOTIF_GRANTED) === 'true';
   if (granted && schedule && schedule.type !== 'never') {
     notifBtn.classList.add('active');
   } else {
@@ -1063,13 +1105,17 @@ function pickRandomGoal() {
   return goals[Math.floor(Math.random() * goals.length)].text;
 }
 
-function scheduleNextNotification(schedule) {
+async function scheduleNextNotification(schedule) {
   if (!schedule || schedule.type === 'never' || !schedule.ms) return;
   const next = Date.now() + schedule.ms;
   localStorage.setItem(NOTIF_NEXT, next.toString());
+  await syncToIDB();
+  if (swReg && 'periodicSync' in swReg) {
+    swReg.periodicSync.register('goal-reminder', { minInterval: schedule.ms }).catch(() => {});
+  }
 }
 
-function checkAndFireNotification() {
+async function checkAndFireNotification() {
   const granted = localStorage.getItem(NOTIF_GRANTED) === 'true';
   if (!granted) return;
   const schedule = getNotifSchedule();
@@ -1079,18 +1125,13 @@ function checkAndFireNotification() {
   const nextStr = localStorage.getItem(NOTIF_NEXT);
   const now = Date.now();
 
-  if (!nextStr) {
-    scheduleNextNotification(schedule);
-    return;
-  }
+  if (!nextStr) { await scheduleNextNotification(schedule); return; }
 
   const next = parseInt(nextStr, 10);
   if (now >= next) {
     const goal = pickRandomGoal();
-    if (goal) {
-      new Notification('Goal Reminder', { body: goal, icon: '/images/mtg.png' });
-    }
-    scheduleNextNotification(schedule);
+    if (goal) new Notification('Goal Reminder', { body: goal, icon: '/images/mtg.png' });
+    await scheduleNextNotification(schedule);
   }
 }
 
@@ -1101,18 +1142,18 @@ notifBtn.addEventListener('click', async () => {
 
   if (timeSinceLast < 1000) {
     if (typeof window.NotifPopup !== 'undefined') {
-      window.NotifPopup.show((savedSchedule) => {
+      window.NotifPopup.show(async (savedSchedule) => {
         if (savedSchedule.type !== 'never') {
-          requestNotifPermission().then(granted => {
-            if (granted) {
-              localStorage.setItem(NOTIF_GRANTED, 'true');
-              scheduleNextNotification(savedSchedule);
-            }
-            updateNotifBtnState();
-          });
+          const granted = await requestNotifPermission();
+          if (granted) {
+            localStorage.setItem(NOTIF_GRANTED, 'true');
+            await scheduleNextNotification(savedSchedule);
+          }
         } else {
-          updateNotifBtnState();
+          localStorage.removeItem(NOTIF_NEXT);
+          await syncToIDB();
         }
+        updateNotifBtnState();
       });
     }
     return;
@@ -1125,19 +1166,24 @@ notifBtn.addEventListener('click', async () => {
     if (!existing || existing.type === 'never') {
       const defaultSchedule = { type: 'everyday', ms: 86400000 };
       localStorage.setItem(NOTIF_KEY, JSON.stringify(defaultSchedule));
-      scheduleNextNotification(defaultSchedule);
+      await scheduleNextNotification(defaultSchedule);
     }
     updateNotifBtnState();
     const goal = pickRandomGoal();
-    if (goal) {
-      new Notification('Goal Reminder', { body: goal, icon: '/images/mtg.png' });
-    }
+    if (goal) new Notification('Goal Reminder', { body: goal, icon: '/images/mtg.png' });
+    await syncToIDB();
   }
 });
 
-updateNotifBtnState();
-checkAndFireNotification();
+const _origSaveGoals = saveGoals;
+function saveGoals(goals) {
+  _origSaveGoals(goals);
+  syncToIDB().catch(() => {});
+}
 
+updateNotifBtnState();
+syncToIDB().catch(() => {});
+checkAndFireNotification();
 setInterval(checkAndFireNotification, 60000);
 </script>
 </body>
