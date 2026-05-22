@@ -4,7 +4,7 @@
   "redirects": [
     {
       "source": "/posts/:path*",
-      "destination": "post.mtgoals.cc",
+      "destination": "https://post.mtgoals.cc/:path*",
       "permanent": true
     }
   ]
