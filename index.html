@@ -517,6 +517,237 @@
 .modal-yes-btn:hover {
   background: #f0c71e;
 }
+
+@media (hover: none) and (pointer: coarse) {
+  .delete-btn,
+  .edit-btn {
+    padding: 6px;
+  }
+  .delete-btn svg,
+  .edit-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+  .drag-handle {
+    padding: 6px 8px;
+    gap: 4px;
+    opacity: 0.55;
+  }
+  .drag-handle span {
+    width: 4px;
+    height: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 36px 12px 120px;
+  }
+
+  header {
+    margin-bottom: 32px;
+  }
+
+  header .logo {
+    height: 54px;
+  }
+
+  .add-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .add-btn {
+    flex: 1 1 100%;
+    font-size: 0.82rem;
+    padding: 13px 16px;
+  }
+
+  #exportBtn,
+  #importBtn,
+  #notifBtn {
+    flex: 1;
+    height: 42px;
+    justify-content: center;
+  }
+
+  .goal-input-row {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .goal-input-row textarea {
+    font-size: 0.9rem;
+    height: auto;
+    min-height: 42px;
+  }
+
+  .input-actions {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .goal-edit-row {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .goal-edit-row textarea {
+    font-size: 0.9rem;
+  }
+
+  .goal-card {
+    padding: 12px 12px;
+    gap: 10px;
+  }
+
+  .goal-card .goal-text {
+    font-size: 0.84rem;
+  }
+
+  .footer,
+  .footer-right {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    background-color: rgba(49, 51, 56, 0.97);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: 6px 8px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer {
+    bottom: 36px;
+    padding-bottom: 4px;
+    border-top: none;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .footer {
+    bottom: 0;
+    padding: 6px 8px;
+    background-color: rgba(49, 51, 56, 0.97);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    flex-wrap: wrap;
+    row-gap: 0;
+  }
+
+  .footer-right {
+    bottom: 0;
+    padding: 6px 8px;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-top: none;
+    pointer-events: none;
+  }
+
+  .footer-right * {
+    pointer-events: auto;
+  }
+
+  .footer-link {
+    font-size: 0.72rem;
+    padding: 4px 6px;
+  }
+
+  .footer-link svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .theme-toggle-btn {
+    font-size: 0.72rem;
+    padding: 4px 6px;
+  }
+
+  .theme-toggle-btn svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .footer-divider {
+    font-size: 0.72rem;
+  }
+
+  .modal-box {
+    padding: 22px 18px 18px;
+    border-radius: 8px;
+  }
+
+  .modal-box p {
+    font-size: 0.82rem;
+  }
+
+  .modal-no-btn,
+  .modal-yes-btn {
+    font-size: 0.78rem;
+    padding: 8px 14px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  body {
+    padding: 48px 20px 100px;
+  }
+
+  .footer,
+  .footer-right {
+    bottom: 16px;
+  }
+
+  .footer {
+    left: 12px;
+  }
+
+  .footer-right {
+    right: 12px;
+  }
+
+  .footer-link,
+  .theme-toggle-btn,
+  .footer-divider {
+    font-size: 0.74rem;
+  }
+}
+
+@media (max-height: 500px) {
+  .footer,
+  .footer-right {
+    position: static;
+    margin-top: 24px;
+  }
+
+  .footer {
+    justify-content: center;
+  }
+
+  .footer-right {
+    justify-content: center;
+    width: 100%;
+  }
+
+  body {
+    padding-bottom: 24px;
+  }
+}
   </style>
 </head>
 <body>
