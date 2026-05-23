@@ -438,10 +438,10 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
 <script>
-const STORAGE_KEY   = 'monkeytype_goals';
-const NOTIF_KEY     = 'monkeytype_goals_notif_schedule';
-const NOTIF_GRANTED = 'monkeytype_goals_notif_granted';
-const NOTIF_NEXT    = 'monkeytype_goals_notif_next';
+const MT_STORAGE_KEY   = 'monkeytype_goals';
+const MT_NOTIF_KEY     = 'monkeytype_goals_notif_schedule';
+const MT_NOTIF_GRANTED = 'monkeytype_goals_notif_granted';
+const MT_NOTIF_NEXT    = 'monkeytype_goals_notif_next';
 
 const container   = document.getElementById('goalsContainer');
 const addRow      = document.getElementById('addRow');
@@ -461,12 +461,12 @@ themeBtn.addEventListener('click', () => {
 });
 
 function loadGoals() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  try { return JSON.parse(localStorage.getItem(MT_STORAGE_KEY)) || []; }
   catch { return []; }
 }
 
 function saveGoals(goals) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
+  localStorage.setItem(MT_STORAGE_KEY, JSON.stringify(goals));
   syncToIDB().catch(() => {});
 }
 
@@ -852,7 +852,7 @@ async function idbSet(key, value) {
 async function syncToIDB() {
   const goals    = loadGoals();
   const schedule = getNotifSchedule();
-  const next     = localStorage.getItem(NOTIF_NEXT);
+  const next     = localStorage.getItem(MT_NOTIF_NEXT);
   await Promise.all([
     idbSet('monkeytype_goals',                goals),
     idbSet('monkeytype_goals_notif_schedule', schedule),
@@ -873,13 +873,13 @@ if ('serviceWorker' in navigator) {
 
 function updateNotifBtnState() {
   const schedule = getNotifSchedule();
-  const granted  = localStorage.getItem(NOTIF_GRANTED) === 'true';
+  const granted  = localStorage.getItem(MT_NOTIF_GRANTED) === 'true';
   if (granted && schedule && schedule.type !== 'never') notifBtn.classList.add('active');
   else notifBtn.classList.remove('active');
 }
 
 function getNotifSchedule() {
-  try { return JSON.parse(localStorage.getItem(NOTIF_KEY)) || null; }
+  try { return JSON.parse(localStorage.getItem(MT_NOTIF_KEY)) || null; }
   catch { return null; }
 }
 
@@ -900,7 +900,7 @@ function pickRandomGoal() {
 async function scheduleNextNotification(schedule) {
   if (!schedule || schedule.type === 'never' || !schedule.ms) return;
   const next = Date.now() + schedule.ms;
-  localStorage.setItem(NOTIF_NEXT, next.toString());
+  localStorage.setItem(MT_NOTIF_NEXT, next.toString());
   await syncToIDB();
   if (swReg && 'periodicSync' in swReg) {
     swReg.periodicSync.register('goal-reminder', { minInterval: schedule.ms }).catch(() => {});
@@ -908,12 +908,12 @@ async function scheduleNextNotification(schedule) {
 }
 
 async function checkAndFireNotification() {
-  const granted = localStorage.getItem(NOTIF_GRANTED) === 'true';
+  const granted = localStorage.getItem(MT_NOTIF_GRANTED) === 'true';
   if (!granted) return;
   const schedule = getNotifSchedule();
   if (!schedule || schedule.type === 'never' || !schedule.ms) return;
   if (Notification.permission !== 'granted') return;
-  const nextStr = localStorage.getItem(NOTIF_NEXT);
+  const nextStr = localStorage.getItem(MT_NOTIF_NEXT);
   const now = Date.now();
   if (!nextStr) { await scheduleNextNotification(schedule); return; }
   const next = parseInt(nextStr, 10);
@@ -934,11 +934,11 @@ notifBtn.addEventListener('click', async () => {
         if (savedSchedule.type !== 'never') {
           const granted = await requestNotifPermission();
           if (granted) {
-            localStorage.setItem(NOTIF_GRANTED, 'true');
+            localStorage.setItem(MT_NOTIF_GRANTED, 'true');
             await scheduleNextNotification(savedSchedule);
           }
         } else {
-          localStorage.removeItem(NOTIF_NEXT);
+          localStorage.removeItem(MT_NOTIF_NEXT);
           await syncToIDB();
         }
         updateNotifBtnState();
@@ -948,11 +948,11 @@ notifBtn.addEventListener('click', async () => {
   }
   const granted = await requestNotifPermission();
   if (granted) {
-    localStorage.setItem(NOTIF_GRANTED, 'true');
+    localStorage.setItem(MT_NOTIF_GRANTED, 'true');
     const existing = getNotifSchedule();
     if (!existing || existing.type === 'never') {
       const defaultSchedule = { type: 'everyday', ms: 86400000 };
-      localStorage.setItem(NOTIF_KEY, JSON.stringify(defaultSchedule));
+      localStorage.setItem(MT_NOTIF_KEY, JSON.stringify(defaultSchedule));
       await scheduleNextNotification(defaultSchedule);
     }
     updateNotifBtnState();
