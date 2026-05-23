@@ -71,7 +71,7 @@ function updateFavicon(accent, bg) {
   ctx.closePath();
   ctx.fill();
   ctx.fillStyle = accent || '#e2b714';
-  ctx.font = '500 28px FuturaCyrillicMedium, sans-serif';
+  ctx.font = '500 36px FuturaCyrillicMedium, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('mtg', size / 2, size / 2 + 1);
