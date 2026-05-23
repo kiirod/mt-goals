@@ -67,14 +67,8 @@
       transition: color 0.2s;
       margin-top: 6px;
     }
-    header a.mt-link:hover {
-      color: rgba(255,255,255,0.8);
-    }
-    header a.mt-link svg {
-      width: 11px;
-      height: 11px;
-      flex-shrink: 0;
-    }
+    header a.mt-link:hover { color: rgba(255,255,255,0.8); }
+    header a.mt-link svg { width: 11px; height: 11px; flex-shrink: 0; }
 
     .container {
       width: 100%;
@@ -103,10 +97,7 @@
       cursor: pointer;
       transition: background 0.2s, color 0.2s;
     }
-    .add-btn:hover {
-      background-color: var(--mt-bg-card-hover);
-      color: rgba(255,255,255,0.7);
-    }
+    .add-btn:hover { background-color: var(--mt-bg-card-hover); color: rgba(255,255,255,0.7); }
 
     .icon-action-btn {
       background-color: var(--mt-bg-card);
@@ -122,15 +113,8 @@
       transition: background 0.2s, opacity 0.2s;
       flex-shrink: 0;
     }
-    .icon-action-btn:hover {
-      background-color: var(--mt-bg-card-hover);
-      opacity: 1;
-    }
-    .icon-action-btn svg {
-      width: 20px;
-      height: 20px;
-      display: block;
-    }
+    .icon-action-btn:hover { background-color: var(--mt-bg-card-hover); opacity: 1; }
+    .icon-action-btn svg { width: 20px; height: 20px; display: block; }
 
     #notifBtn {
       background-color: var(--mt-bg-card);
@@ -146,23 +130,10 @@
       transition: background 0.2s, opacity 0.2s;
       flex-shrink: 0;
     }
-    #notifBtn:hover {
-      background-color: var(--mt-bg-card-hover);
-      opacity: 1;
-    }
-    #notifBtn svg {
-      width: 20px;
-      height: 20px;
-      display: block;
-      transition: fill 0.25s;
-    }
-    #notifBtn.active {
-      opacity: 1;
-    }
-    #notifBtn.active svg path {
-      fill: rgba(255,255,255,0.9);
-      stroke: rgba(255,255,255,0.9);
-    }
+    #notifBtn:hover { background-color: var(--mt-bg-card-hover); opacity: 1; }
+    #notifBtn svg { width: 20px; height: 20px; display: block; transition: fill 0.25s; }
+    #notifBtn.active { opacity: 1; }
+    #notifBtn.active svg path { fill: rgba(255,255,255,0.9); stroke: rgba(255,255,255,0.9); }
 
     .goal-input-row {
       display: flex;
@@ -173,7 +144,6 @@
       gap: 12px;
       animation: fadeIn 0.2s ease;
     }
-
     .goal-input-row textarea {
       flex: 1;
       background: transparent;
@@ -187,37 +157,15 @@
       line-height: 1.5;
       padding-top: 4px;
     }
-    .goal-input-row textarea::placeholder {
-      color: rgba(255,255,255,0.3);
-    }
+    .goal-input-row textarea::placeholder { color: rgba(255,255,255,0.3); }
 
-    .input-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
+    .input-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 
-    .char-counter {
-      color: rgba(255,255,255,0.5);
-      font-size: 0.72rem;
-      white-space: nowrap;
-    }
+    .char-counter { color: rgba(255,255,255,0.5); font-size: 0.72rem; white-space: nowrap; }
 
-    .word-counter {
-      font-size: 0.72rem;
-      white-space: nowrap;
-      transition: color 0.2s, opacity 0.35s;
-      opacity: 1;
-    }
-    .word-counter.under {
-      color: var(--mt-accent);
-      opacity: 1;
-    }
-    .word-counter.met {
-      opacity: 0;
-      pointer-events: none;
-    }
+    .word-counter { font-size: 0.72rem; white-space: nowrap; transition: color 0.2s, opacity 0.35s; opacity: 1; }
+    .word-counter.under { color: var(--mt-accent); opacity: 1; }
+    .word-counter.met { opacity: 0; pointer-events: none; }
 
     .pin-btn, .cancel-btn {
       background: none;
@@ -230,20 +178,11 @@
       border-radius: 4px;
       transition: background 0.15s, opacity 0.15s;
     }
-
-    .pin-btn {
-      color: var(--mt-accent);
-    }
+    .pin-btn { color: var(--mt-accent); }
     .pin-btn:hover { background: var(--mt-accent-muted); }
-    .pin-btn.disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
-    }
+    .pin-btn.disabled { opacity: 0.35; cursor: not-allowed; }
     .pin-btn.disabled:hover { background: none; }
-
-    .cancel-btn {
-      color: rgba(255,255,255,0.45);
-    }
+    .cancel-btn { color: rgba(255,255,255,0.45); }
     .cancel-btn:hover { background: rgba(255,255,255,0.07); }
 
     .goal-card {
@@ -258,173 +197,58 @@
       transition: box-shadow 0.15s, background 0.15s;
       user-select: none;
     }
+    .goal-card.dragging { opacity: 0.45; box-shadow: none; }
+    .goal-card.drag-over { box-shadow: 0 0 0 2px var(--mt-accent); }
+    .goal-card .goal-text { flex: 1; color: #fff; font-size: 0.88rem; line-height: 1.6; word-break: break-word; }
 
-    .goal-card.dragging {
-      opacity: 0.45;
-      box-shadow: none;
-    }
-
-    .goal-card.drag-over {
-      box-shadow: 0 0 0 2px var(--mt-accent);
-    }
-
-    .goal-card .goal-text {
-      flex: 1;
-      color: #fff;
-      font-size: 0.88rem;
-      line-height: 1.6;
-      word-break: break-word;
-    }
-
-    .goal-card-actions {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-shrink: 0;
-    }
+    .goal-card-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 
     .delete-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 2px;
-      flex-shrink: 0;
-      opacity: 0.55;
-      transition: opacity 0.15s;
-      display: flex;
-      align-items: center;
+      background: none; border: none; cursor: pointer; padding: 2px;
+      flex-shrink: 0; opacity: 0.55; transition: opacity 0.15s; display: flex; align-items: center;
     }
     .delete-btn:hover { opacity: 1; }
     .delete-btn svg { width: 18px; height: 18px; display: block; }
 
     .drag-handle {
-      background: none;
-      border: none;
-      cursor: grab;
-      padding: 2px 4px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      opacity: 0.35;
-      transition: opacity 0.15s;
-      touch-action: none;
-      height: 100%;
-      align-self: center;
+      background: none; border: none; cursor: grab; padding: 2px 4px; flex-shrink: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 3px; opacity: 0.35; transition: opacity 0.15s; touch-action: none; height: 100%; align-self: center;
     }
     .drag-handle:hover { opacity: 0.9; }
     .drag-handle:active { cursor: grabbing; }
-    .drag-handle span {
-      display: block;
-      width: 3.5px;
-      height: 3.5px;
-      border-radius: 50%;
-      background: #fff;
-    }
+    .drag-handle span { display: block; width: 3.5px; height: 3.5px; border-radius: 50%; background: #fff; }
+    .drag-handle.hidden { visibility: hidden; pointer-events: none; }
 
-    .drag-handle.hidden {
-      visibility: hidden;
-      pointer-events: none;
-    }
+    .drop-indicator { height: 2px; background: var(--mt-accent); border-radius: 2px; margin: -6px 0; animation: fadeIn 0.1s ease; }
 
-    .drop-indicator {
-      height: 2px;
-      background: var(--mt-accent);
-      border-radius: 2px;
-      margin: -6px 0;
-      animation: fadeIn 0.1s ease;
-    }
+    .fading { animation: fadeOut 0.35s ease forwards; }
 
-    .fading {
-      animation: fadeOut 0.35s ease forwards;
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.97); } }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeOut {
-      from { opacity: 1; transform: scale(1); }
-      to   { opacity: 0; transform: scale(0.97); }
-    }
-
-    .footer {
-      position: fixed;
-      bottom: 28px;
-      left: 28px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .footer-right {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
+    .footer { position: fixed; bottom: 28px; left: 28px; display: flex; align-items: center; gap: 4px; }
+    .footer-right { position: fixed; bottom: 28px; right: 28px; display: flex; align-items: center; gap: 4px; }
 
     .footer-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: rgba(255,255,255,0.5);
-      font-family: 'Roboto Mono', monospace;
-      font-size: 0.78rem;
-      font-weight: 300;
-      text-decoration: none;
-      padding: 6px 8px;
-      border-radius: 4px;
-      transition: color 0.2s;
+      display: inline-flex; align-items: center; gap: 6px; background: none; border: none;
+      cursor: pointer; color: rgba(255,255,255,0.5); font-family: 'Roboto Mono', monospace;
+      font-size: 0.78rem; font-weight: 300; text-decoration: none; padding: 6px 8px;
+      border-radius: 4px; transition: color 0.2s;
     }
-    .footer-link:hover {
-      color: rgba(255,255,255,1);
-    }
-    .footer-link svg {
-      width: 15px;
-      height: 15px;
-      flex-shrink: 0;
-      opacity: inherit;
-    }
+    .footer-link:hover { color: rgba(255,255,255,1); }
+    .footer-link svg { width: 15px; height: 15px; flex-shrink: 0; opacity: inherit; }
 
-    .footer-divider {
-      color: rgba(255,255,255,0.2);
-      font-size: 0.78rem;
-      user-select: none;
-    }
+    .footer-divider { color: rgba(255,255,255,0.2); font-size: 0.78rem; user-select: none; }
 
     .theme-toggle-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: rgba(255,255,255,0.5);
-      font-family: 'Roboto Mono', monospace;
-      font-size: 0.78rem;
-      font-weight: 300;
-      text-decoration: none;
-      padding: 6px 8px;
-      border-radius: 4px;
-      transition: color 0.2s;
+      display: inline-flex; align-items: center; gap: 6px; background: none; border: none;
+      cursor: pointer; color: rgba(255,255,255,0.5); font-family: 'Roboto Mono', monospace;
+      font-size: 0.78rem; font-weight: 300; text-decoration: none; padding: 6px 8px;
+      border-radius: 4px; transition: color 0.2s;
     }
-    .theme-toggle-btn:hover {
-      color: rgba(255,255,255,1);
-    }
-    .theme-toggle-btn svg {
-      width: 15px;
-      height: 15px;
-      flex-shrink: 0;
-      opacity: inherit;
-    }
+    .theme-toggle-btn:hover { color: rgba(255,255,255,1); }
+    .theme-toggle-btn svg { width: 15px; height: 15px; flex-shrink: 0; opacity: inherit; }
 
     .goal-edit-row {
       display: flex; align-items: flex-start; background-color: var(--mt-bg-card);
@@ -444,295 +268,88 @@
     .edit-btn svg { width: 18px; height: 18px; display: block; }
 
     .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 99999;
-      animation: fadeIn 0.15s ease;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 99999; animation: fadeIn 0.15s ease;
     }
-
     .modal-box {
-      background: var(--mt-bg-card);
-      border-radius: 10px;
-      padding: 28px 28px 22px;
-      max-width: 400px;
-      width: calc(100% - 40px);
-      font-family: 'Roboto Mono', monospace;
-      color: #fff;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
-      animation: fadeIn 0.18s ease;
+      background: var(--mt-bg-card); border-radius: 10px; padding: 28px 28px 22px;
+      max-width: 400px; width: calc(100% - 40px); font-family: 'Roboto Mono', monospace;
+      color: #fff; box-shadow: 0 8px 40px rgba(0,0,0,0.5); animation: fadeIn 0.18s ease;
     }
-
-    .modal-box p {
-      font-size: 0.88rem;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.85);
-      margin-bottom: 22px;
-    }
-
-    .modal-box p .override-word {
-      color: #ff4d4d;
-      text-decoration: underline;
-      font-weight: 500;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
-
+    .modal-box p { font-size: 0.88rem; line-height: 1.7; color: rgba(255,255,255,0.85); margin-bottom: 22px; }
+    .modal-box p .override-word { color: #ff4d4d; text-decoration: underline; font-weight: 500; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
     .modal-no-btn, .modal-yes-btn {
-      font-family: 'Roboto Mono', monospace;
-      font-size: 0.82rem;
-      border: none;
-      border-radius: 6px;
-      padding: 8px 18px;
-      cursor: pointer;
-      transition: background 0.15s, opacity 0.15s;
+      font-family: 'Roboto Mono', monospace; font-size: 0.82rem; border: none;
+      border-radius: 6px; padding: 8px 18px; cursor: pointer; transition: background 0.15s, opacity 0.15s;
     }
-
-    .modal-no-btn {
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.7);
-    }
-    .modal-no-btn:hover {
-      background: rgba(255,255,255,0.14);
-      color: #fff;
-    }
-
-    .modal-yes-btn {
-      background: var(--mt-accent);
-      color: #1a1a1a;
-      font-weight: 600;
-    }
-    .modal-yes-btn:hover {
-      background: var(--mt-accent-hover);
-    }
+    .modal-no-btn { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); }
+    .modal-no-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
+    .modal-yes-btn { background: var(--mt-accent); color: #1a1a1a; font-weight: 600; }
+    .modal-yes-btn:hover { background: var(--mt-accent-hover); }
 
     @media (hover: none) and (pointer: coarse) {
-      .delete-btn,
-      .edit-btn {
-        padding: 6px;
-      }
-      .delete-btn svg,
-      .edit-btn svg {
-        width: 22px;
-        height: 22px;
-      }
-      .drag-handle {
-        padding: 6px 8px;
-        gap: 4px;
-        opacity: 0.55;
-      }
-      .drag-handle span {
-        width: 4px;
-        height: 4px;
-      }
+      .delete-btn, .edit-btn { padding: 6px; }
+      .delete-btn svg, .edit-btn svg { width: 22px; height: 22px; }
+      .drag-handle { padding: 6px 8px; gap: 4px; opacity: 0.55; }
+      .drag-handle span { width: 4px; height: 4px; }
     }
 
     @media (max-width: 480px) {
-      body {
-        padding: 36px 12px 120px;
-      }
-
-      header {
-        margin-bottom: 32px;
-      }
-
-      header .logo {
-        height: 54px;
-      }
-
-      .add-row {
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .add-btn {
-        flex: 1 1 100%;
-        font-size: 0.82rem;
-        padding: 13px 16px;
-      }
-
-      #exportBtn,
-      #importBtn,
-      #notifBtn {
-        flex: 1;
-        height: 42px;
-        justify-content: center;
-      }
-
-      .goal-input-row {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 12px;
-        gap: 8px;
-      }
-
-      .goal-input-row textarea {
-        font-size: 0.9rem;
-        height: auto;
-        min-height: 42px;
-      }
-
-      .input-actions {
-        justify-content: flex-end;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-
-      .goal-edit-row {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 12px;
-        gap: 8px;
-      }
-
-      .goal-edit-row textarea {
-        font-size: 0.9rem;
-      }
-
-      .goal-card {
-        padding: 12px 12px;
-        gap: 10px;
-      }
-
-      .goal-card .goal-text {
-        font-size: 0.84rem;
-      }
-
-      .footer,
-      .footer-right {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 0;
-        background-color: rgba(49, 51, 56, 0.97);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        padding: 6px 8px;
+      body { padding: 36px 12px 120px; }
+      header { margin-bottom: 32px; }
+      header .logo { height: 54px; }
+      .add-row { flex-wrap: wrap; gap: 8px; }
+      .add-btn { flex: 1 1 100%; font-size: 0.82rem; padding: 13px 16px; }
+      #exportBtn, #importBtn, #notifBtn { flex: 1; height: 42px; justify-content: center; }
+      .goal-input-row { flex-direction: column; align-items: stretch; padding: 12px; gap: 8px; }
+      .goal-input-row textarea { font-size: 0.9rem; height: auto; min-height: 42px; }
+      .input-actions { justify-content: flex-end; flex-wrap: wrap; gap: 6px; }
+      .goal-edit-row { flex-direction: column; align-items: stretch; padding: 12px; gap: 8px; }
+      .goal-edit-row textarea { font-size: 0.9rem; }
+      .goal-card { padding: 12px 12px; gap: 10px; }
+      .goal-card .goal-text { font-size: 0.84rem; }
+      .footer, .footer-right {
+        position: fixed; bottom: 0; left: 0; right: 0; width: 100%;
+        display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0;
+        background-color: rgba(49,51,56,0.97); backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px); padding: 6px 8px;
         border-top: 1px solid rgba(255,255,255,0.06);
       }
-
       .footer {
-        bottom: 0;
-        padding: 6px 8px;
-        background-color: rgba(49, 51, 56, 0.97);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        border-top: 1px solid rgba(255,255,255,0.06);
-        flex-wrap: wrap;
-        row-gap: 0;
+        bottom: 0; padding: 6px 8px; background-color: rgba(49,51,56,0.97);
+        backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+        border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; row-gap: 0;
       }
-
       .footer-right {
-        bottom: 0;
-        padding: 6px 8px;
-        background: transparent;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        border-top: none;
-        pointer-events: none;
+        bottom: 0; padding: 6px 8px; background: transparent;
+        backdrop-filter: none; -webkit-backdrop-filter: none; border-top: none; pointer-events: none;
       }
-
-      .footer-right * {
-        pointer-events: auto;
-      }
-
-      .footer-link {
-        font-size: 0.72rem;
-        padding: 4px 6px;
-      }
-
-      .footer-link svg {
-        width: 13px;
-        height: 13px;
-      }
-
-      .theme-toggle-btn {
-        font-size: 0.72rem;
-        padding: 4px 6px;
-      }
-
-      .theme-toggle-btn svg {
-        width: 13px;
-        height: 13px;
-      }
-
-      .footer-divider {
-        font-size: 0.72rem;
-      }
-
-      .modal-box {
-        padding: 22px 18px 18px;
-        border-radius: 8px;
-      }
-
-      .modal-box p {
-        font-size: 0.82rem;
-      }
-
-      .modal-no-btn,
-      .modal-yes-btn {
-        font-size: 0.78rem;
-        padding: 8px 14px;
-      }
+      .footer-right * { pointer-events: auto; }
+      .footer-link { font-size: 0.72rem; padding: 4px 6px; }
+      .footer-link svg { width: 13px; height: 13px; }
+      .theme-toggle-btn { font-size: 0.72rem; padding: 4px 6px; }
+      .theme-toggle-btn svg { width: 13px; height: 13px; }
+      .footer-divider { font-size: 0.72rem; }
+      .modal-box { padding: 22px 18px 18px; border-radius: 8px; }
+      .modal-box p { font-size: 0.82rem; }
+      .modal-no-btn, .modal-yes-btn { font-size: 0.78rem; padding: 8px 14px; }
     }
 
     @media (min-width: 481px) and (max-width: 768px) {
-      body {
-        padding: 48px 20px 100px;
-      }
-
-      .footer,
-      .footer-right {
-        bottom: 16px;
-      }
-
-      .footer {
-        left: 12px;
-      }
-
-      .footer-right {
-        right: 12px;
-      }
-
-      .footer-link,
-      .theme-toggle-btn,
-      .footer-divider {
-        font-size: 0.74rem;
-      }
+      body { padding: 48px 20px 100px; }
+      .footer, .footer-right { bottom: 16px; }
+      .footer { left: 12px; }
+      .footer-right { right: 12px; }
+      .footer-link, .theme-toggle-btn, .footer-divider { font-size: 0.74rem; }
     }
 
     @media (max-height: 500px) {
-      .footer,
-      .footer-right {
-        position: static;
-        margin-top: 24px;
-      }
-
-      .footer {
-        justify-content: center;
-      }
-
-      .footer-right {
-        justify-content: center;
-        width: 100%;
-      }
-
-      body {
-        padding-bottom: 24px;
-      }
+      .footer, .footer-right { position: static; margin-top: 24px; }
+      .footer { justify-content: center; }
+      .footer-right { justify-content: center; width: 100%; }
+      body { padding-bottom: 24px; }
     }
   </style>
 </head>
@@ -826,10 +443,10 @@ const NOTIF_KEY     = 'monkeytype_goals_notif_schedule';
 const NOTIF_GRANTED = 'monkeytype_goals_notif_granted';
 const NOTIF_NEXT    = 'monkeytype_goals_notif_next';
 
-const container  = document.getElementById('goalsContainer');
-const addRow     = document.getElementById('addRow');
-const addBtn     = document.getElementById('addBtn');
-const MAX        = 180;
+const container   = document.getElementById('goalsContainer');
+const addRow      = document.getElementById('addRow');
+const addBtn      = document.getElementById('addBtn');
+const MAX         = 180;
 const MIN_LETTERS = 5;
 
 const themeBtn   = document.getElementById('themeToggleBtn');
@@ -850,6 +467,7 @@ function loadGoals() {
 
 function saveGoals(goals) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
+  syncToIDB().catch(() => {});
 }
 
 function updateDragHandles() {
@@ -1034,9 +652,7 @@ function showInputRow() {
     ta.style.height = ta.scrollHeight + 'px';
     counter.textContent = `${ta.value.length}/${MAX}`;
     const letters = ta.value.trim().length;
-    if (letters < MIN_LETTERS) {
-      wordCounter.textContent = `${letters}/${MIN_LETTERS}`;
-    }
+    if (letters < MIN_LETTERS) wordCounter.textContent = `${letters}/${MIN_LETTERS}`;
     if (letters >= MIN_LETTERS) {
       wordCounter.classList.remove('under');
       wordCounter.classList.add('met');
@@ -1067,7 +683,7 @@ function showInputRow() {
   cancelBtn.addEventListener('click', cancelGoal);
   ta.addEventListener('keydown', e => {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); pinGoal(); }
-    if (e.key === 'Escape') { cancelGoal(); }
+    if (e.key === 'Escape') cancelGoal();
   });
 
   actionsEl.appendChild(wordCounter);
@@ -1149,7 +765,7 @@ function showEditRow(card, id, currentText) {
   ta.setSelectionRange(ta.value.length, ta.value.length);
 }
 
-document.getElementById('exportBtn').addEventListener('click', () => {
+exportBtn.addEventListener('click', () => {
   const goals = loadGoals();
   const blob = new Blob([JSON.stringify(goals, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -1159,7 +775,7 @@ document.getElementById('exportBtn').addEventListener('click', () => {
 });
 
 const importFileInput = document.getElementById('importFileInput');
-document.getElementById('importBtn').addEventListener('click', () => { importFileInput.value = ''; importFileInput.click(); });
+importBtn.addEventListener('click', () => { importFileInput.value = ''; importFileInput.click(); });
 
 importFileInput.addEventListener('change', () => {
   const file = importFileInput.files[0];
@@ -1222,6 +838,7 @@ function idbOpen() {
     req.onerror   = e => reject(e.target.error);
   });
 }
+
 async function idbSet(key, value) {
   const db = await idbOpen();
   return new Promise((resolve, reject) => {
@@ -1237,7 +854,7 @@ async function syncToIDB() {
   const schedule = getNotifSchedule();
   const next     = localStorage.getItem(NOTIF_NEXT);
   await Promise.all([
-    idbSet('monkeytype_goals',               goals),
+    idbSet('monkeytype_goals',                goals),
     idbSet('monkeytype_goals_notif_schedule', schedule),
     idbSet('monkeytype_goals_notif_next',     next),
   ]);
@@ -1257,11 +874,8 @@ if ('serviceWorker' in navigator) {
 function updateNotifBtnState() {
   const schedule = getNotifSchedule();
   const granted  = localStorage.getItem(NOTIF_GRANTED) === 'true';
-  if (granted && schedule && schedule.type !== 'never') {
-    notifBtn.classList.add('active');
-  } else {
-    notifBtn.classList.remove('active');
-  }
+  if (granted && schedule && schedule.type !== 'never') notifBtn.classList.add('active');
+  else notifBtn.classList.remove('active');
 }
 
 function getNotifSchedule() {
@@ -1347,12 +961,6 @@ notifBtn.addEventListener('click', async () => {
     await syncToIDB();
   }
 });
-
-const _origSaveGoals = saveGoals;
-function saveGoals(goals) {
-  _origSaveGoals(goals);
-  syncToIDB().catch(() => {});
-}
 
 updateNotifBtnState();
 syncToIDB().catch(() => {});
