@@ -20,3 +20,6 @@ You can join our Discord server, 'Monkeytype Projects' by clicking [here](https:
 
 # License
 Our project uses the MIT License, to view the license, you can click [this](https://github.com/kiirod/mt-goals/blob/main/LICENSE)
+
+# Twemoji
+We use Twemoji in our Goal Reminder notification, you can check out Twemoji by clicking [this](https://github.com/twitter/twemoji/blob/master/LICENSE)
