@@ -1,4 +1,3 @@
-
 (function () {
   const NOTIF_SCHEDULE_KEY = 'monkeytype_goals_notif_schedule';
 
@@ -21,11 +20,22 @@
     return { ms: num * msMap[unit], label: `Every ${num} ${unit === 'd' ? 'day' : unit === 'h' ? 'hour' : 'minute'}${num !== 1 ? 's' : ''}`, raw: str.trim() };
   }
 
+  function getThemeVars() {
+    const style = getComputedStyle(document.documentElement);
+    return {
+      accent:      style.getPropertyValue('--mt-accent').trim()        || '#e2b714',
+      accentHover: style.getPropertyValue('--mt-accent-hover').trim()  || '#f0c71e',
+      accentMuted: style.getPropertyValue('--mt-accent-muted').trim()  || 'rgba(226,183,20,0.08)',
+      bgCard:      style.getPropertyValue('--mt-bg-card').trim()       || '#2b2d31',
+    };
+  }
+
   function show(onSave) {
     const existing = document.getElementById('notif-popup-overlay');
     if (existing) existing.remove();
 
     const current = loadSchedule();
+    const { accent, accentHover, accentMuted, bgCard } = getThemeVars();
 
     const overlay = document.createElement('div');
     overlay.id = 'notif-popup-overlay';
@@ -60,7 +70,7 @@
         width: 100%;
       }
       .notif-option-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
-      .notif-option-btn.selected { border-color: #e2b714; color: #e2b714; background: rgba(226,183,20,0.08); }
+      .notif-option-btn.selected { border-color: ${accent}; color: ${accent}; background: ${accentMuted}; }
       #notif-custom-input {
         background: rgba(255,255,255,0.07);
         border: 1.5px solid rgba(255,255,255,0.18);
@@ -75,21 +85,12 @@
         margin-top: 8px;
         box-sizing: border-box;
       }
-      #notif-custom-input:focus { border-color: #e2b714; }
+      #notif-custom-input:focus { border-color: ${accent}; }
       #notif-custom-input::placeholder { color: rgba(255,255,255,0.3); }
-      #notif-custom-hint {
-        font-size: 0.72rem;
-        color: rgba(255,255,255,0.35);
-        margin-top: 5px;
-      }
-      #notif-custom-error {
-        font-size: 0.72rem;
-        color: #ff6b6b;
-        margin-top: 5px;
-        min-height: 16px;
-      }
+      #notif-custom-hint { font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-top: 5px; }
+      #notif-custom-error { font-size: 0.72rem; color: #ff6b6b; margin-top: 5px; min-height: 16px; }
       #notif-save-btn {
-        background: #e2b714;
+        background: ${accent};
         border: none;
         border-radius: 6px;
         color: #1a1a1a;
@@ -100,7 +101,7 @@
         cursor: pointer;
         transition: background 0.15s;
       }
-      #notif-save-btn:hover { background: #f0c71e; }
+      #notif-save-btn:hover { background: ${accentHover}; }
       #notif-cancel-btn {
         background: rgba(255,255,255,0.08);
         border: none;
@@ -119,7 +120,7 @@
     const box = document.createElement('div');
     box.id = 'notif-popup-box';
     Object.assign(box.style, {
-      background: '#2b2d31',
+      background: bgCard,
       borderRadius: '12px',
       padding: '26px 24px 22px',
       maxWidth: '380px',
@@ -167,9 +168,7 @@
       });
     });
 
-    box.querySelector('#notif-cancel-btn').addEventListener('click', () => {
-      overlay.remove();
-    });
+    box.querySelector('#notif-cancel-btn').addEventListener('click', () => overlay.remove());
 
     box.querySelector('#notif-save-btn').addEventListener('click', () => {
       customError.textContent = '';
@@ -194,9 +193,7 @@
       if (onSave) onSave(schedule);
     });
 
-    overlay.addEventListener('click', e => {
-      if (e.target === overlay) overlay.remove();
-    });
+    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
 
     document.addEventListener('keydown', function esc(e) {
       if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', esc); }
