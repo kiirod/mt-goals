@@ -967,7 +967,7 @@ notifBtn.addEventListener('click', async () => {
     }
     updateNotifBtnState();
     const goal = pickRandomGoal();
-    if (goal) new Notification('Goal Reminder', { body: goal, icon: '/images/mtg.png' });
+    if (goal) new Notification('Goal Reminder', { body: goal, icon: '/images/reminder/goalreminder.png' });
     await syncToIDB();
   }
 });
