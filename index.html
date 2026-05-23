@@ -929,7 +929,7 @@ async function checkAndFireNotification() {
   const next = parseInt(nextStr, 10);
   if (now >= next) {
     const goal = pickRandomGoal();
-    if (goal) new Notification('Goal Reminder', { body: goal, icon: '/images/mtg.png' });
+    if (goal) new Notification('Goal Reminder', { body: goal, icon: '/images/reminder/goalreminder.png' });
     await scheduleNextNotification(schedule);
   }
 }
