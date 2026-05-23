@@ -1,10 +1,7 @@
-// Credentials stored in localStorage only
-
 (function () {
-  const LS_USER  = 'mt_username';
-  const LS_KEY   = 'mt_ape_key';
-  const LS_THEME = 'monkeytype_goals_theme';
-  const API      = 'https://api.monkeytype.com';
+  const LS_USER = 'mt_username';
+  const LS_KEY  = 'mt_ape_key';
+  const API     = 'https://api.monkeytype.com';
 
   const MT_LOGO_SVG = `<svg viewBox="-690 -1040 320 200" fill="white" xmlns="http://www.w3.org/2000/svg">
     <g>
@@ -22,12 +19,19 @@
 
   const INFO_SVG = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.5 12C19.5 16.1421 16.1421 19.5 12 19.5C7.85786 19.5 4.5 16.1421 4.5 12C4.5 7.85786 7.85786 4.5 12 4.5C16.1421 4.5 19.5 7.85786 19.5 12ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM11.25 13.5V8.25H12.75V13.5H11.25ZM11.25 15.75V14.25H12.75V15.75H11.25Z" fill="#ffffff"></path></svg>`;
 
-  function getAccent() {
-    return localStorage.getItem(LS_THEME) === 'discord' ? '#5974ea' : '#e2b714';
+  function getThemeVars() {
+    const style = getComputedStyle(document.documentElement);
+    return {
+      accent:      style.getPropertyValue('--mt-accent').trim()        || '#e2b714',
+      accentHover: style.getPropertyValue('--mt-accent-hover').trim()  || '#f0c71e',
+      bgPrimary:   style.getPropertyValue('--mt-bg-primary').trim()    || '#313338',
+      bgCard:      style.getPropertyValue('--mt-bg-card').trim()       || '#2b2d31',
+      bgCardHover: style.getPropertyValue('--mt-bg-card-hover').trim() || '#35373d',
+    };
   }
 
   function buildStyles() {
-    const accent = getAccent();
+    const { accent, accentHover, bgCard, bgCardHover, bgPrimary } = getThemeVars();
     const existing = document.getElementById('mt-widget-style');
     if (existing) existing.remove();
 
@@ -43,7 +47,7 @@
     }
 
     #mt-connect-btn {
-      background: #2b2d31;
+      background: ${bgCard};
       border: none;
       border-radius: 8px;
       color: rgba(255,255,255,0.45);
@@ -58,7 +62,7 @@
       animation: mtFadeIn 0.25s ease;
     }
     #mt-connect-btn:hover {
-      background: #35373d;
+      background: ${bgCardHover};
       color: rgba(255,255,255,0.75);
     }
     #mt-connect-btn svg {
@@ -68,7 +72,7 @@
     }
 
     #mt-widget-card {
-      background: #2b2d31;
+      background: ${bgCard};
       border-radius: 10px;
       padding: 11px 13px;
       display: flex;
@@ -80,7 +84,7 @@
       max-width: 230px;
       animation: mtFadeIn 0.25s ease;
     }
-    #mt-widget-card:hover { background: #35373d; }
+    #mt-widget-card:hover { background: ${bgCardHover}; }
 
     .mt-avatar {
       width: 34px;
@@ -152,7 +156,7 @@
       width: 17px;
       height: 17px;
       border-radius: 50%;
-      background: #313338;
+      background: ${bgPrimary};
       border: 1px solid rgba(255,255,255,0.1);
       cursor: pointer;
       display: none;
@@ -191,7 +195,7 @@
       padding: 20px;
     }
     #mt-modal {
-      background: #2b2d31;
+      background: ${bgCard};
       border-radius: 12px;
       padding: 24px 24px 20px;
       width: 100%;
@@ -219,10 +223,7 @@
       align-items: center;
       justify-content: center;
     }
-    #mt-modal-header-logo svg {
-      width: 36px;
-      height: 36px;
-    }
+    #mt-modal-header-logo svg { width: 36px; height: 36px; }
     #mt-modal-header-title {
       color: rgba(255,255,255,0.88);
       font-size: 1rem;
@@ -238,39 +239,21 @@
       text-underline-offset: 3px;
       margin-bottom: 8px;
     }
-    #mt-modal-tutorial-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    #mt-modal-tutorial-steps { display: flex; flex-direction: column; gap: 6px; }
     .mt-tutorial-step {
       color: rgba(255,255,255,0.42);
       font-size: 0.72rem;
       line-height: 1.65;
     }
-    .mt-tutorial-step a {
-      color: ${accent};
-      text-decoration: none;
-    }
+    .mt-tutorial-step a { color: ${accent}; text-decoration: none; }
     .mt-tutorial-step a:hover { text-decoration: underline; }
-    .mt-tutorial-underline {
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
+    .mt-tutorial-underline { text-decoration: underline; text-underline-offset: 2px; }
 
     .mt-field { display: flex; flex-direction: column; gap: 5px; }
-    .mt-field-label {
-      color: rgba(255,255,255,0.5);
-      font-size: 0.68rem;
-      letter-spacing: 0.03em;
-    }
-    .mt-field-label-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .mt-field-label { color: rgba(255,255,255,0.5); font-size: 0.68rem; letter-spacing: 0.03em; }
+    .mt-field-label-row { display: flex; align-items: center; gap: 6px; }
     .mt-field input {
-      background: #313338;
+      background: ${bgPrimary};
       border: 1px solid rgba(255,255,255,0.07);
       border-radius: 6px;
       color: #fff;
@@ -297,10 +280,7 @@
       cursor: default;
       transition: opacity 0.15s;
     }
-    .mt-info-icon svg {
-      width: 14px;
-      height: 14px;
-    }
+    .mt-info-icon svg { width: 14px; height: 14px; }
     .mt-info-icon:hover { opacity: 0.7; }
     .mt-info-tooltip {
       display: none;
@@ -329,7 +309,6 @@
       margin-top: -8px;
     }
 
-    /* ── Actions ── */
     #mt-modal-actions {
       display: flex;
       gap: 8px;
@@ -347,10 +326,7 @@
       border-radius: 6px;
       transition: background 0.15s, color 0.15s;
     }
-    #mt-modal-cancel:hover {
-      background: rgba(255,255,255,0.05);
-      color: rgba(255,255,255,0.65);
-    }
+    #mt-modal-cancel:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.65); }
     #mt-modal-save {
       background: ${accent};
       border: none;
@@ -366,7 +342,6 @@
     #mt-modal-save:hover:not(:disabled) { filter: brightness(1.12); }
     #mt-modal-save:disabled { opacity: 0.45; cursor: default; }
 
-    /* ── Disconnect confirm ── */
     #mt-disc-overlay {
       position: fixed;
       inset: 0;
@@ -379,7 +354,7 @@
       padding: 20px;
     }
     #mt-disc-modal {
-      background: #2b2d31;
+      background: ${bgCard};
       border-radius: 12px;
       padding: 28px 26px 24px;
       width: 100%;
@@ -394,18 +369,8 @@
     }
     #mt-disc-icon { opacity: 0.5; width: 40px; height: 40px; margin-top: 2px; }
     #mt-disc-icon svg { width: 40px; height: 40px; }
-    #mt-disc-text {
-      color: rgba(255,255,255,0.8);
-      font-size: 0.82rem;
-      text-align: center;
-      line-height: 1.55;
-    }
-    #mt-disc-actions {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      width: 100%;
-    }
+    #mt-disc-text { color: rgba(255,255,255,0.8); font-size: 0.82rem; text-align: center; line-height: 1.55; }
+    #mt-disc-actions { display: flex; gap: 8px; justify-content: center; width: 100%; }
     #mt-disc-yes {
       background: ${accent};
       border: none;
@@ -433,23 +398,20 @@
     }
     #mt-disc-no:hover { background: #d44233; }
 
-    @keyframes mtFadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-    @keyframes mtSlideUp {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes mtPulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.35; }
-    }
+    @keyframes mtFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes mtSlideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes mtPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
   `;
     document.head.appendChild(style);
   }
 
   buildStyles();
+
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'monkeytype_goals_theme_v2') buildStyles();
+  });
+
+  document.addEventListener('mt-theme-changed', () => buildStyles());
 
   const widget = document.createElement('div');
   widget.id = 'mt-widget';
@@ -512,31 +474,24 @@
     widget.innerHTML = '';
     const card = document.createElement('div');
     card.id = 'mt-widget-card';
-
     const info = document.createElement('div');
     info.id = 'mt-widget-info';
-
     const name = document.createElement('div');
     name.id = 'mt-widget-name';
     name.className = 'mt-pulse';
     name.textContent = username;
     name.style.minWidth = '60px';
-
     const statsRow = document.createElement('div');
     statsRow.id = 'mt-widget-stats';
-
     const s1 = makeStat('000', '15s pb');
     const s2 = makeStat('000', '60s pb');
     s1.querySelector('.mt-stat-value').classList.add('mt-pulse');
     s2.querySelector('.mt-stat-value').classList.add('mt-pulse');
-
     const div = document.createElement('div');
     div.className = 'mt-stat-divider';
-
     statsRow.appendChild(s1);
     statsRow.appendChild(div);
     statsRow.appendChild(s2);
-
     info.appendChild(name);
     info.appendChild(statsRow);
     card.appendChild(makeAvatar(username[0]));
@@ -563,15 +518,12 @@
       </div>
     `;
     document.body.appendChild(overlay);
-
     const yesBtn = document.getElementById('mt-disc-yes');
     const noBtn  = document.getElementById('mt-disc-no');
     const close  = () => overlay.remove();
-
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
     const escHandler = e => { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); } };
     document.addEventListener('keydown', escHandler);
-
     noBtn.addEventListener('click', close);
     yesBtn.addEventListener('click', () => {
       localStorage.removeItem(LS_USER);
@@ -583,14 +535,12 @@
 
   function renderCard(username, pb15, pb60, discordId, discordAvatar) {
     widget.innerHTML = '';
-
     const card = document.createElement('a');
     card.id = 'mt-widget-card';
     card.href = `https://monkeytype.com/profile/${encodeURIComponent(username)}`;
     card.target = '_blank';
     card.rel = 'noopener noreferrer';
     card.title = 'View Monkeytype profile';
-
     let avatarEl;
     if (discordId && discordAvatar) {
       const img = document.createElement('img');
@@ -602,17 +552,13 @@
     } else {
       avatarEl = makeAvatar(username[0]);
     }
-
     const info = document.createElement('div');
     info.id = 'mt-widget-info';
-
     const name = document.createElement('div');
     name.id = 'mt-widget-name';
     name.textContent = username;
-
     const statsRow = document.createElement('div');
     statsRow.id = 'mt-widget-stats';
-
     if (pb15 !== null || pb60 !== null) {
       if (pb15 !== null) statsRow.appendChild(makeStat(pb15, '15s pb'));
       if (pb15 !== null && pb60 !== null) {
@@ -627,12 +573,10 @@
       empty.textContent = 'no results yet';
       statsRow.appendChild(empty);
     }
-
     info.appendChild(name);
     info.appendChild(statsRow);
     card.appendChild(avatarEl);
     card.appendChild(info);
-
     const disc = document.createElement('button');
     disc.id = 'mt-widget-disconnect';
     disc.title = 'Disconnect';
@@ -642,29 +586,24 @@
       e.stopPropagation();
       openDisconnectConfirm();
     });
-
     widget.appendChild(card);
     widget.appendChild(disc);
   }
 
   async function loadStats(username, apeKey) {
     renderSkeleton(username);
-
     try {
       const pbRes = await api('/users/personalBests?mode=time', apeKey);
       const timeData = pbRes?.data?.time ?? {};
       const pb15 = bestWpm(timeData['15']);
       const pb60 = bestWpm(timeData['60']);
-
       let discordId = null, discordAvatar = null;
       try {
         const profileRes = await api(`/users/${encodeURIComponent(username)}/profile`, apeKey);
         discordId     = profileRes?.data?.discordId     ?? null;
         discordAvatar = profileRes?.data?.discordAvatar ?? null;
       } catch (_) {}
-
       renderCard(username, pb15, pb60, discordId, discordAvatar);
-
     } catch (err) {
       const s = err.status;
       localStorage.removeItem(LS_USER);
@@ -690,56 +629,42 @@
     const overlay = document.createElement('div');
     overlay.id = 'mt-modal-overlay';
     document.body.appendChild(overlay);
-
     const modal = document.createElement('div');
     modal.id = 'mt-modal';
     overlay.appendChild(modal);
-
     const header = document.createElement('div');
     header.id = 'mt-modal-header';
-
     const logoWrap = document.createElement('div');
     logoWrap.id = 'mt-modal-header-logo';
     logoWrap.innerHTML = MT_LOGO_SVG;
-
     const titleEl = document.createElement('div');
     titleEl.id = 'mt-modal-header-title';
     titleEl.textContent = 'connection';
-
     header.appendChild(logoWrap);
     header.appendChild(titleEl);
     modal.appendChild(header);
-
     const tutorialWrap = document.createElement('div');
-
     const tutorialLabel = document.createElement('div');
     tutorialLabel.id = 'mt-modal-tutorial-label';
     tutorialLabel.textContent = 'Tutorial';
-
     const steps = document.createElement('div');
     steps.id = 'mt-modal-tutorial-steps';
-
     const step1 = document.createElement('div');
     step1.className = 'mt-tutorial-step';
     step1.innerHTML = `1. Get your ape key by clicking <a href="https://monkeytype.com/account-settings?tab=apeKeys" target="_blank" rel="noopener">here</a>.`;
-
     const step2 = document.createElement('div');
     step2.className = 'mt-tutorial-step';
     step2.innerHTML = `2. Make sure it is <span class="mt-tutorial-underline">activated</span> by clicking the checkbox next to it.`;
-
     steps.appendChild(step1);
     steps.appendChild(step2);
     tutorialWrap.appendChild(tutorialLabel);
     tutorialWrap.appendChild(steps);
     modal.appendChild(tutorialWrap);
-
     const userField = document.createElement('div');
     userField.className = 'mt-field';
-
     const userLabel = document.createElement('div');
     userLabel.className = 'mt-field-label';
     userLabel.textContent = 'Monkeytype Username';
-
     const userInput = document.createElement('input');
     userInput.id = 'mt-input-user';
     userInput.type = 'text';
@@ -747,28 +672,21 @@
     userInput.autocomplete = 'off';
     userInput.spellcheck = false;
     userInput.value = localStorage.getItem(LS_USER) || '';
-
     userField.appendChild(userLabel);
     userField.appendChild(userInput);
     modal.appendChild(userField);
-
     const keyField = document.createElement('div');
     keyField.className = 'mt-field';
-
     const keyLabelRow = document.createElement('div');
     keyLabelRow.className = 'mt-field-label-row';
-
     const keyLabel = document.createElement('div');
     keyLabel.className = 'mt-field-label';
     keyLabel.textContent = 'Ape Key';
-
     const infoIcon = document.createElement('div');
     infoIcon.className = 'mt-info-icon';
     infoIcon.innerHTML = `${INFO_SVG}<span class="mt-info-tooltip">This Ape Key is never shown to mtgoals.cc,<br>it stays on your computer.</span>`;
-
     keyLabelRow.appendChild(keyLabel);
     keyLabelRow.appendChild(infoIcon);
-
     const keyInput = document.createElement('input');
     keyInput.id = 'mt-input-key';
     keyInput.type = 'password';
@@ -776,32 +694,24 @@
     keyInput.autocomplete = 'off';
     keyInput.spellcheck = false;
     keyInput.value = localStorage.getItem(LS_KEY) || '';
-
     keyField.appendChild(keyLabelRow);
     keyField.appendChild(keyInput);
     modal.appendChild(keyField);
-
     const errorEl = document.createElement('div');
     errorEl.id = 'mt-modal-error';
     modal.appendChild(errorEl);
-
     const actions = document.createElement('div');
     actions.id = 'mt-modal-actions';
-
     const cancelBtn = document.createElement('button');
     cancelBtn.id = 'mt-modal-cancel';
     cancelBtn.textContent = 'cancel';
-
     const saveBtn = document.createElement('button');
     saveBtn.id = 'mt-modal-save';
     saveBtn.textContent = 'connect';
-
     actions.appendChild(cancelBtn);
     actions.appendChild(saveBtn);
     modal.appendChild(actions);
-
     userInput.focus();
-
     const close = () => overlay.remove();
     cancelBtn.addEventListener('click', close);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
@@ -810,22 +720,17 @@
     [userInput, keyInput].forEach(inp => {
       inp.addEventListener('keydown', e => { if (e.key === 'Enter') saveBtn.click(); });
     });
-
     saveBtn.addEventListener('click', async () => {
       const username = userInput.value.trim();
       const apeKey   = keyInput.value.trim();
-
       errorEl.style.display = 'none';
-
       if (!username || !apeKey) {
         errorEl.textContent = 'Please fill in both fields.';
         errorEl.style.display = 'block';
         return;
       }
-
       saveBtn.disabled = true;
       saveBtn.textContent = 'connecting...';
-
       try {
         await api('/users/personalBests?mode=time', apeKey);
         localStorage.setItem(LS_USER, username);
@@ -850,13 +755,8 @@
     });
   }
 
-  window.addEventListener('storage', (e) => {
-    if (e.key === LS_THEME) buildStyles();
-  });
-
   const savedUser = localStorage.getItem(LS_USER);
   const savedKey  = localStorage.getItem(LS_KEY);
-
   if (savedUser && savedKey) {
     loadStats(savedUser, savedKey);
   } else {
