@@ -510,10 +510,10 @@
             <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z" style="fill-rule:nonzero;"></path>
           </svg>
         </div>
-        <div id="mt-disc-text">Are you sure you want to disconnect?</div>
+        <div id="mt-disc-text">Do you want to disconnect your account?</div>
         <div id="mt-disc-actions">
-          <button id="mt-disc-yes">Yes I'm sure!</button>
-          <button id="mt-disc-no">No Don't!</button>
+          <button id="mt-disc-yes">Yes I Do!</button>
+          <button id="mt-disc-no">No I Dont!</button>
         </div>
       </div>
     `;
