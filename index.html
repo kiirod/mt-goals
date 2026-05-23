@@ -267,6 +267,45 @@
     .edit-btn:hover { opacity: 1; }
     .edit-btn svg { width: 18px; height: 18px; display: block; }
 
+    .age-btn {
+      background: none; border: none; cursor: default; padding: 2px;
+      flex-shrink: 0; opacity: 0.55; transition: opacity 0.15s; display: flex; align-items: center;
+      position: relative;
+    }
+    .age-btn:hover { opacity: 1; }
+    .age-btn svg { width: 18px; height: 18px; display: block; }
+
+    .age-btn.stale { cursor: pointer; }
+
+    .age-tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e2023;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: rgba(255,255,255,0.75);
+      font-size: 0.68rem;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 10;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.45);
+    }
+    .age-btn:hover .age-tooltip { opacity: 1; }
+
+    .empty-state {
+      color: rgba(255,255,255,0.25);
+      font-size: 0.88rem;
+      text-align: center;
+      padding: 32px 0 8px;
+      user-select: none;
+      animation: fadeIn 0.2s ease;
+    }
+
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.6);
       display: flex; align-items: center; justify-content: center;
@@ -567,7 +606,105 @@ function finishDrag() {
   saveGoals(newOrder.map(id => map[id]).filter(Boolean));
 }
 
-function renderGoal(text, id) {
+function getAgeLabel(createdAt) {
+  if (!createdAt) return null;
+  const ms = Date.now() - createdAt;
+  const days = Math.floor(ms / 86400000);
+  if (days < 1) return 'made today';
+  if (days < 30) return `made ${days} day${days !== 1 ? 's' : ''} ago`;
+  const months = Math.floor(days / 30);
+  if (months < 12) return `made ${months} month${months !== 1 ? 's' : ''} ago`;
+  const years = Math.floor(months / 12);
+  return `made ${years} year${years !== 1 ? 's' : ''} ago`;
+}
+
+function isStale(createdAt) {
+  if (!createdAt) return false;
+  return Date.now() - createdAt > 30 * 24 * 60 * 60 * 1000;
+}
+
+function updateEmptyState() {
+  const existing = container.querySelector('.empty-state');
+  const hasCards = getCards().length > 0;
+  if (hasCards && existing) { existing.remove(); return; }
+  if (!hasCards && !existing) {
+    const el = document.createElement('div');
+    el.className = 'empty-state';
+    el.textContent = 'No goals yet.';
+    container.appendChild(el);
+  }
+}
+
+function showStalePopup(id, ageBtn) {
+  const existing = document.getElementById('stale-popup-overlay');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'stale-popup-overlay';
+  Object.assign(overlay.style, {
+    position: 'fixed', inset: '0', background: 'rgba(0,0,0,0.6)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    zIndex: '99999', animation: 'fadeIn 0.15s ease',
+  });
+
+  const box = document.createElement('div');
+  box.className = 'modal-box';
+
+  const p = document.createElement('p');
+  p.textContent = 'Are you still working on this goal?';
+
+  const actions = document.createElement('div');
+  actions.className = 'modal-actions';
+
+  const yesBtn = document.createElement('button');
+  yesBtn.className = 'modal-yes-btn';
+  yesBtn.textContent = 'Yes';
+
+  const noBtn = document.createElement('button');
+  noBtn.className = 'modal-no-btn';
+  noBtn.textContent = 'No';
+
+  yesBtn.addEventListener('click', () => {
+    overlay.remove();
+    const goals = loadGoals();
+    const idx = goals.findIndex(g => g.id === id);
+    if (idx !== -1) {
+      goals[idx].createdAt = Date.now();
+      saveGoals(goals);
+    }
+    ageBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 7V12L9.5 13.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="age-tooltip">made just now</span>`;
+    ageBtn.classList.remove('stale');
+    ageBtn.style.cursor = 'default';
+  });
+
+  noBtn.addEventListener('click', () => {
+    overlay.remove();
+    const card = container.querySelector(`.goal-card[data-id="${id}"]`);
+    if (card) {
+      card.classList.add('fading');
+      card.addEventListener('animationend', () => {
+        card.remove();
+        saveGoals(loadGoals().filter(g => g.id !== id));
+        updateDragHandles();
+        updateEmptyState();
+      });
+    }
+  });
+
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.addEventListener('keydown', function esc(e) {
+    if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', esc); }
+  });
+
+  actions.appendChild(yesBtn);
+  actions.appendChild(noBtn);
+  box.appendChild(p);
+  box.appendChild(actions);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+}
+
+function renderGoal(text, id, createdAt) {
   const card = document.createElement('div');
   card.className = 'goal-card';
   card.dataset.id = id;
@@ -585,6 +722,18 @@ function renderGoal(text, id) {
   editBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.56078 20.2501L20.5608 8.25011L15.7501 3.43945L3.75012 15.4395V20.2501H8.56078ZM15.7501 5.56077L18.4395 8.25011L16.5001 10.1895L13.8108 7.50013L15.7501 5.56077ZM12.7501 8.56079L15.4395 11.2501L7.93946 18.7501H5.25012L5.25012 16.0608L12.7501 8.56079Z" fill="#ffffff"></path></svg>`;
   editBtn.addEventListener('click', () => showEditRow(card, id, textEl.textContent));
 
+  const ageBtn = document.createElement('button');
+  ageBtn.className = 'age-btn';
+  const stale = isStale(createdAt);
+  const ageLabel = getAgeLabel(createdAt) || 'made just now';
+  if (stale) {
+    ageBtn.classList.add('stale');
+    ageBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="17" r="1" fill="#ffffff"></circle><path d="M12 10L12 14" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M3.44722 18.1056L10.2111 4.57771C10.9482 3.10361 13.0518 3.10362 13.7889 4.57771L20.5528 18.1056C21.2177 19.4354 20.2507 21 18.7639 21H5.23607C3.7493 21 2.78231 19.4354 3.44722 18.1056Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="age-tooltip">${ageLabel}</span>`;
+    ageBtn.addEventListener('click', () => showStalePopup(id, ageBtn));
+  } else {
+    ageBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 7V12L9.5 13.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="age-tooltip">${ageLabel}</span>`;
+  }
+
   const delBtn = document.createElement('button');
   delBtn.className = 'delete-btn';
   delBtn.title = 'Remove goal';
@@ -596,6 +745,7 @@ function renderGoal(text, id) {
       card.remove();
       saveGoals(loadGoals().filter(g => g.id !== id));
       updateDragHandles();
+      updateEmptyState();
     });
   });
 
@@ -606,6 +756,7 @@ function renderGoal(text, id) {
   handle.addEventListener('mousedown', e => onHandleMouseDown(e, card, id));
   handle.addEventListener('touchstart', e => onHandleTouchStart(e, card, id), { passive: true });
 
+  actions.appendChild(ageBtn);
   actions.appendChild(editBtn);
   actions.appendChild(delBtn);
   card.appendChild(handle);
@@ -613,6 +764,7 @@ function renderGoal(text, id) {
   card.appendChild(actions);
   container.appendChild(card);
   updateDragHandles();
+  updateEmptyState();
 }
 
 function hideAddRowButtons() {
@@ -679,11 +831,12 @@ function showInputRow() {
     if (text.length < MIN_LETTERS) return;
     if (!text) { row.remove(); showAddRowButtons(); return; }
     const id = Date.now().toString();
+    const createdAt = Date.now();
     const goals = loadGoals();
-    goals.push({ id, text });
+    goals.push({ id, text, createdAt });
     saveGoals(goals);
     row.remove();
-    renderGoal(text, id);
+    renderGoal(text, id, createdAt);
     showAddRowButtons();
   }
 
@@ -707,7 +860,16 @@ function showInputRow() {
 }
 
 addBtn.addEventListener('click', showInputRow);
-loadGoals().forEach(g => renderGoal(g.text, g.id));
+loadGoals().forEach(g => renderGoal(g.text, g.id, g.createdAt));
+updateEmptyState();
+
+document.addEventListener('keydown', e => {
+  const tag = document.activeElement?.tagName;
+  if (e.key === 'g' && tag !== 'TEXTAREA' && tag !== 'INPUT') {
+    e.preventDefault();
+    showInputRow();
+  }
+});
 
 function launchConfetti() {
   const defaults = { particleCount: 130, spread: 120, colors: ['#e2b714', '#0096FF', '#FF69B4'] };
@@ -929,7 +1091,7 @@ async function checkAndFireNotification() {
   const next = parseInt(nextStr, 10);
   if (now >= next) {
     const goal = pickRandomGoal();
-    if (goal) new Notification('Goal Reminder', { body: goal, icon: '/images/reminder/goalreminder.png' });
+    if (goal) new Notification('Goal Reminder', { body: goal, icon: '/images/mtg.png' });
     await scheduleNextNotification(schedule);
   }
 }
@@ -967,7 +1129,7 @@ notifBtn.addEventListener('click', async () => {
     }
     updateNotifBtnState();
     const goal = pickRandomGoal();
-    if (goal) new Notification('Goal Reminder', { body: goal, icon: '/images/reminder/goalreminder.png' });
+    if (goal) new Notification('Goal Reminder', { body: goal, icon: '/images/mtg.png' });
     await syncToIDB();
   }
 });
