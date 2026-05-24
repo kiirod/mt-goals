@@ -609,8 +609,12 @@ function finishDrag() {
 function getAgeLabel(createdAt) {
   if (!createdAt) return null;
   const ms = Date.now() - createdAt;
+  const minutes = Math.floor(ms / 60000);
+  const hours = Math.floor(ms / 3600000);
   const days = Math.floor(ms / 86400000);
-  if (days < 1) return 'made today';
+  if (minutes < 1) return 'made just now';
+  if (minutes < 60) return `made ${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+  if (hours < 24) return `made ${hours} hour${hours !== 1 ? 's' : ''} ago`;
   if (days < 30) return `made ${days} day${days !== 1 ? 's' : ''} ago`;
   const months = Math.floor(days / 30);
   if (months < 12) return `made ${months} month${months !== 1 ? 's' : ''} ago`;
